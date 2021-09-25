@@ -9,36 +9,27 @@
 #include <stdio.h>
 #define PAS_SIZE 500
 
-// Functional Prototypes
-int getInstructions(char *input, int *pas);
-
 // Simple Placeholder Implementation
 int main(int argc, char **argv)
 {
   int pas[PAS_SIZE];
 
-  // Read instructions from file
-  getInstructions(argv[1], pas);
-
-  // Test File IO
-  printf("%d\n" pas[0]);
-}
-
-
-int getInstructions(char *input, int *pas)
-{
   FILE *fp;
-  int temp;
-  int i = -1;
+  int temp, instructionCount, index = -1;
 
-  if ((fp = fopen(input, "r")) == NULL)
+  // Read instructions from file
+  if ((fp = fopen(argv[1], "r")) == NULL)
     return -1;
 
-  while (!feof (fp) && fscanf (fp, "%d", &temp) && i++ < PAS_SIZE )
-    pas[i] = temp;
+  while (!feof (fp) && fscanf (fp, "%d", &temp) && index++ < PAS_SIZE )
+    pas[index] = temp;
 
   fclose(fp);
 
-  // change to return instruction length
-  return 0;
+  instructionCount = index + 1;
+
+  for(int i = 0; i < instructionCount; i = i + 3)
+  {
+     printf("%d %d %d\n", pas[i], pas[i+1], pas[i+2]);
+  }
 }
