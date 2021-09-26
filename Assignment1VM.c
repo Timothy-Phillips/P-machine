@@ -66,7 +66,7 @@ int main(int argc, char **argv)
 
   fclose(fp);
 
-  instructionCount = index;// + 1;
+  instructionCount = index + 1;
 
   for(int i = 0; i < instructionCount; i = i + 3)
   {
@@ -98,9 +98,9 @@ int main(int argc, char **argv)
   while (PC != IC && halt != 0) {
   // IR = PAS[PC];
 	// PC += 3;
-    IR[0] = PAS[PC++];
-    IR[1] = PAS[PC++];
-    IR[2] = PAS[PC++];
+    IR[0] = PAS[PC];
+    IR[1] = PAS[PC+1];
+    IR[2] = PAS[PC+2];
 
     //•	Enter Execute Cycle						
     switch(IR[0])
@@ -442,9 +442,10 @@ int main(int argc, char **argv)
       default:
         break;
     }//end outer switch
-  
+
     //•	Call print function with appropriate values (register values, oPCode name, line number, etc.)
     print_execution( (PC / 3), opname, IR, PC, BP, SP, DP, PAS, GP);
+    PC += 3;
   }//end loop
 
  
