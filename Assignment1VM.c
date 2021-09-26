@@ -71,12 +71,13 @@ int main(int argc, char **argv)
   for(int i = 0; i < instructionCount; i = i + 3)
   {
     printf("%d %d %d\n", PAS[i], PAS[i + 1], PAS[i + 2]);
+    IC += 3;
   }
 
   //•	Setup registers based on location of instruction counter 
   GP = IC;
   DP = IC - 1;
-  FREE = IC +10;
+  FREE = IC + 40;
   BP = IC;
   PC = 0;
   SP = MAX_PAS_LENGTH;
