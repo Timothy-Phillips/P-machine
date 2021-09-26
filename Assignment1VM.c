@@ -93,12 +93,13 @@ int main(int argc, char **argv)
   // {
   //   printf(" %d", PAS[i]);
   // }
-
+  int PCREV =0;
   printf("\n");
  //Fetch Cycle, fetches the next instruction stored in PC and puts it in the IR, then updates the PC
   while (PC != IC && halt != 0) {
   // IR = PAS[PC];
 	// PC += 3;
+    PCREV = PC;
     IR[0] = PAS[PC++];
     IR[1] = PAS[PC++];
     IR[2] = PAS[PC++];
@@ -445,7 +446,7 @@ int main(int argc, char **argv)
     }//end outer switch
   
     //•	Call print function with appropriate values (register values, oPCode name, line number, etc.)
-    print_execution( (PC / 3), opname, IR, PC, BP, SP, DP, PAS, GP);
+    print_execution( (PCREV / 3), opname, IR, PC, BP, SP, DP, PAS, GP);
   }//end loop
 
  
