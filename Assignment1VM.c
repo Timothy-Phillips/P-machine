@@ -67,12 +67,12 @@ int main(int argc, char **argv)
   fclose(fp);
 
   instructionCount = index + 1;
-
-  for(int i = 0; i < instructionCount; i = i + 3)
-  {
-    printf("%d %d %d\n", PAS[i], PAS[i + 1], PAS[i + 2]);
-    IC += 3;
-  }
+  //print out input
+  // for(int i = 0; i < instructionCount; i = i + 3)
+  // {
+  //   printf("%d %d %d\n", PAS[i], PAS[i + 1], PAS[i + 2]);
+  //   IC += 3;
+  // }
 
   //•	Setup registers based on location of instruction counter 
   GP = IC;
@@ -94,10 +94,12 @@ int main(int argc, char **argv)
   // }
 
   printf("\n");
+  int PCPREV = PC;
  //Fetch Cycle, fetches the next instruction stored in PC and puts it in the IR, then updates the PC
   while (PC != IC && halt != 0) {
   // IR = PAS[PC];
 	// PC += 3;
+    PCPREV = PC;
     IR[0] = PAS[PC++];
     IR[1] = PAS[PC++];
     IR[2] = PAS[PC++];
@@ -444,7 +446,7 @@ int main(int argc, char **argv)
     }//end outer switch
   
     //•	Call print function with appropriate values (register values, oPCode name, line number, etc.)
-    print_execution( (PC / 3), opname, IR, PC, BP, SP, DP, PAS, GP);
+    print_execution( (PCPREV / 3), opname, IR, PC, BP, SP, DP, PAS, GP);
   }//end loop
 
  
