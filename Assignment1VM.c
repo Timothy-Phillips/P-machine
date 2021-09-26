@@ -94,12 +94,10 @@ int main(int argc, char **argv)
   // }
 
   printf("\n");
-  int PCPREV = PC;
  //Fetch Cycle, fetches the next instruction stored in PC and puts it in the IR, then updates the PC
   while (PC != IC && halt != 0) {
   // IR = PAS[PC];
 	// PC += 3;
-    PCPREV = PC;
     IR[0] = PAS[PC++];
     IR[1] = PAS[PC++];
     IR[2] = PAS[PC++];
