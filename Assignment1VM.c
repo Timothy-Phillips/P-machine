@@ -84,7 +84,7 @@ int main(int argc, char **argv)
   printf("PC BP SP DP data\n");;
 
   //•	Print Initial Values for each Register to Console
-  printf("Initial values: %d %d %d %d", PC, BP, SP, DP, data);
+  printf("Initial values: %d %d %d %d", PC, BP, SP, DP);
   for(int i = GP; i < dp; i++)
   {
     printf(" %d", PAS[i]);
