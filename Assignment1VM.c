@@ -105,7 +105,7 @@ int main(int argc, char **argv)
     {
       //LIT
       case 1:
-        strcpy(&opname, "LIT");
+        strcpy(opname, "LIT");
         if(BP == GP)
         {
           DP++;
@@ -123,14 +123,14 @@ int main(int argc, char **argv)
         {
           //RTN
           case 0:
-            strcpy(&opname, "RTN");
+            strcpy(opname, "RTN");
             SP = BP + 1;
             BP = PAS[SP - 2];
             PC = PAS[SP - 3];
             break;
           //NEG
           case 1:
-            strcpy (&opname, "NEG");
+            strcpy (opname, "NEG");
             if(BP == GP)
             {
               PAS[DP] = (-1 * PAS[DP]);
@@ -142,7 +142,7 @@ int main(int argc, char **argv)
             break;
           //ADD
           case 2:
-            strcpy(&opname, "ADD");
+            strcpy(opname, "ADD");
             if(BP == GP)
             {
               DP--;
@@ -156,7 +156,7 @@ int main(int argc, char **argv)
             break;
           //SUB      
           case 3:
-            strcpy(&opname, "SUB");
+            strcpy(opname, "SUB");
             if(BP == GP)
             {
               DP--;
@@ -170,7 +170,7 @@ int main(int argc, char **argv)
             break;
           //MUL
           case 4:
-            strcpy(&opname, "MUL");
+            strcpy(opname, "MUL");
             if(BP == GP)
             {
               DP--;
@@ -184,7 +184,7 @@ int main(int argc, char **argv)
             break;
           //DIV
           case 5:
-            strcpy(&opname, "DIV");
+            strcpy(opname, "DIV");
             if(BP == GP)
             {
               DP--;
@@ -198,7 +198,7 @@ int main(int argc, char **argv)
             break;
           //ODD
           case 6:
-            strcpy(&opname, "ODD");
+            strcpy(opname, "ODD");
             if(BP == GP)
             {
               PAS[DP] = PAS[DP] % 2;
@@ -210,7 +210,7 @@ int main(int argc, char **argv)
             break;
           //MOD
           case 7:
-            strcpy(&opname, "MOD");
+            strcpy(opname, "MOD");
             if(BP == GP)
             {
               DP--;
@@ -224,7 +224,7 @@ int main(int argc, char **argv)
             break;
           //EQL
           case 8:
-            strcpy(&opname, "EQL");
+            strcpy(opname, "EQL");
             if(BP == GP)
             {
               DP--;
@@ -238,7 +238,7 @@ int main(int argc, char **argv)
             break;
           //NEQ
           case 9:
-            strcpy(&opname, "NEQ");
+            strcpy(opname, "NEQ");
             if(BP == GP)
             {
               DP--;
@@ -252,7 +252,7 @@ int main(int argc, char **argv)
             break;
           //LSS
           case 10:
-            strcpy(&opname, "LSS");
+            strcpy(opname, "LSS");
             if(BP == GP)
             {
               DP--;
@@ -266,7 +266,7 @@ int main(int argc, char **argv)
             break;
           //LEQ
           case 11:
-            strcpy(&opname, "LEQ");
+            strcpy(opname, "LEQ");
             if(BP == GP)
             {
               DP--;
@@ -280,7 +280,7 @@ int main(int argc, char **argv)
             break;
           //GTR
           case 12:
-            strcpy(&opname, "GTR");
+            strcpy(opname, "GTR");
             if(BP == GP)
             {
               DP--;
@@ -294,7 +294,7 @@ int main(int argc, char **argv)
             break;
           //GEQ
           case 13:
-            strcpy(&opname, "GEQ");
+            strcpy(opname, "GEQ");
             if(BP == GP)
             {
               DP--;
@@ -312,7 +312,7 @@ int main(int argc, char **argv)
         break;
       //LOD
       case 3:
-        strcpy(&opname, "LOD");
+        strcpy(opname, "LOD");
         if(BP == GP)
         {
           DP++;
@@ -333,7 +333,7 @@ int main(int argc, char **argv)
         break;
       //STO
       case 4:
-        strcpy(&opname, "STO");
+        strcpy(opname, "STO");
         if(BP == GP)
         {
           PAS[GP + IR[2]] = PAS[DP];
@@ -354,7 +354,7 @@ int main(int argc, char **argv)
         break;
       //CAL
       case 5:
-        strcpy(&opname, "CAL");
+        strcpy(opname, "CAL");
         PAS[SP - 1] = base(IR[1]);
         PAS[SP - 2] = BP;
         PAS[SP - 3] = PC;
@@ -363,7 +363,7 @@ int main(int argc, char **argv)
         break;
       //INC
       case 6:
-        strcpy(&opname, "INC");
+        strcpy(opname, "INC");
         if(BP == GP)
         {
           DP += IR[2];
@@ -375,12 +375,12 @@ int main(int argc, char **argv)
         break;
       //JMP
       case 7:
-        strcpy(&opname, "JMP");
+        strcpy(opname, "JMP");
         PC = IR[2];
         break;
       //JPC
       case 8:
-        strcpy(&opname, "JPC");
+        strcpy(opname, "JPC");
         if(BP == GP)
         {
           if(PAS[DP] == 0)
@@ -400,7 +400,7 @@ int main(int argc, char **argv)
         break;
       //SYS
       case 9:
-        strcpy(&opname, "SYS");
+        strcpy(opname, "SYS");
         switch(IR[2])
         {
           case 1:
