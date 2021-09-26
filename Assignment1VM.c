@@ -39,7 +39,7 @@ void print_execution(int line, char *opname, int *IR, int PC, int BP, int SP, in
 int main(int argc, char **argv)
 {
   int halt = 1;
-  char opname[3];
+  char opname[4];
   
   // Initializing the PAS array to 0
   for (int i = 0; i < PAS_SIZE; i++)
@@ -85,7 +85,7 @@ int main(int argc, char **argv)
 
   //•	Print Initial Values for each Register to Console
   printf("Initial values: %d %d %d %d", PC, BP, SP, DP);
-  for(int i = GP; i < dp; i++)
+  for(int i = GP; i < DP; i++)
   {
     printf(" %d", PAS[i]);
   }
@@ -218,7 +218,7 @@ int main(int argc, char **argv)
             else
             {
               SP++;
-              PAS[SP] = PAS[SP] % PASPAS[SP - 1];
+              PAS[SP] = PAS[SP] % PAS[SP - 1];
             }                    
             break;
           //EQL
@@ -485,11 +485,11 @@ void print_execution(int line, char *opname, int *IR, int PC, int BP, int SP, in
 	for (i = MAX_PAS_LENGTH - 1; i >= SP; i--)
 		printf("%d ", PAS[i]);
 	printf("\n");
-}
+
 	for (i = MAX_PAS_LENGTH - 1; i >= SP; i--)
 		printf("%d ", PAS[i]);
 	printf("\n");
-}
+
 	for (i = MAX_PAS_LENGTH - 1; i >= SP; i--)
 		printf("%d ", PAS[i]);
 	printf("\n");
