@@ -349,7 +349,7 @@ int main(int argc, char **argv)
           }
           else
           {
-            PAS[base(IR[1]) - IR[2]] = PAS[SP]];
+            PAS[base(IR[1]) - IR[2]] = PAS[SP];
           }
           SP++;
         }   
