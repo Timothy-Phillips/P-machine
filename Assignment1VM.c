@@ -345,11 +345,11 @@ int main(int argc, char **argv)
         {
           if(base(IR[1])== GP)
           {
-            PAS[SP] = PAS[GP + IR[2]];          
+            PAS[GP + IR[2]] = PAS[SP];          
           }
           else
           {
-            PAS[SP] = PAS[base(IR[1]) - IR[2]];
+            PAS[base(IR[1]) - IR[2]] = PAS[SP]];
           }
           SP++;
         }   
