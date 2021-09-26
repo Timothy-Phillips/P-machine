@@ -83,14 +83,15 @@ int main(int argc, char **argv)
   SP = MAX_PAS_LENGTH;
 
   //•	Print Column Headers to Console
-  printf("PC BP SP DP data\n");;
+  // printf("PC BP SP DP data\n");;
+  printf("\t\t\t\tPC\tBP\tSP\tDP\tdata\n");
 
   //•	Print Initial Values for each Register to Console
   printf("Initial values: %d %d %d %d", PC, BP, SP, DP);
-  for(int i = GP; i < DP; i++)
-  {
-    printf(" %d", PAS[i]);
-  }
+  // for(int i = GP; i < DP; i++)
+  // {
+  //   printf(" %d", PAS[i]);
+  // }
 
   printf("\n");
  //Fetch Cycle, fetches the next instruction stored in PC and puts it in the IR, then updates the PC
@@ -416,6 +417,7 @@ int main(int argc, char **argv)
               printf("%d", PAS[SP]);
               SP++;
             }
+            printf("\n");
             break;
           case 2:
             printf("Please Enter an Integer:");
