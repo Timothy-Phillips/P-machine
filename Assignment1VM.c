@@ -6,6 +6,7 @@
      Marcos Chacon
 */
 #include <stdio.h>
+#include <string.h>
 #define PAS_SIZE 500
 int MAX_PAS_LENGTH = 500;
 
