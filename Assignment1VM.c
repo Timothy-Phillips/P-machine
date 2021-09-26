@@ -66,7 +66,7 @@ int main(int argc, char **argv)
 
   fclose(fp);
 
-  instructionCount = index + 1;
+  instructionCount = index;// + 1;
 
   for(int i = 0; i < instructionCount; i = i + 3)
   {
