@@ -446,7 +446,7 @@ int main(int argc, char **argv)
     }//end outer switch
   
     //•	Call print function with appropriate values (register values, oPCode name, line number, etc.)
-    print_execution( (PCPREV / 3), opname, IR, PC, BP, SP, DP, PAS, GP);
+    print_execution( (PC / 3), opname, IR, PC, BP, SP, DP, PAS, GP);
   }//end loop
 
  
