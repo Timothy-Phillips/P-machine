@@ -87,7 +87,7 @@ int main(int argc, char **argv)
   printf("\t\t\t\tPC\tBP\tSP\tDP\tdata\n");
 
   //•	Print Initial Values for each Register to Console
-  printf("Initial values: %d %d %d %d", PC, BP, SP, DP);
+  printf("Initial values:\t\t\t%d\t%d\t%d\t%d", PC, BP, SP, DP);
   // for(int i = GP; i < DP; i++)
   // {
   //   printf(" %d", PAS[i]);
@@ -490,11 +490,4 @@ void print_execution(int line, char *opname, int *IR, int PC, int BP, int SP, in
 		printf("%d ", PAS[i]);
 	printf("\n");
 
-	for (i = MAX_PAS_LENGTH - 1; i >= SP; i--)
-		printf("%d ", PAS[i]);
-	printf("\n");
-
-	for (i = MAX_PAS_LENGTH - 1; i >= SP; i--)
-		printf("%d ", PAS[i]);
-	printf("\n");
 }
