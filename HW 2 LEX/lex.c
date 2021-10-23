@@ -338,6 +338,10 @@ lexeme *lexanalyzer(char *input)
 int lookahead(char *input, char *target)
 {
 	int targetLength = strlen(target);
+	int inputLength = strlen(input);
+	if (inputLength < targetLength)
+		return 0;
+
 	for(int i = 0; i < targetLength; i++)
 	{
 		if(input[i] != target[i])
