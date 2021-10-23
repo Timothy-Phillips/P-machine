@@ -254,7 +254,7 @@ lexeme *lexanalyzer(char *input)
 		else if(isalpha(token) != 0)
 		{
 			int identLength = 0;
-			char ident[12];
+			char *ident = calloc(sizeof(char) * 12);
 			ident[identLength] = token;
 			identLength++;
 			
