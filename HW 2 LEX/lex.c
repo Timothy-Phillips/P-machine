@@ -273,6 +273,7 @@ lexeme *lexanalyzer(char *input)
 				}
 				else
 				{
+					i = j;
 					break;
 				}//end if else
 				i = j;
