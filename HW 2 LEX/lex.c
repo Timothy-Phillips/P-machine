@@ -322,7 +322,7 @@ lexeme *lexanalyzer(char *input)
 			int j = i +1;
 			while(input[j] != '\n')
 				j++;
-			i = j + 1;	
+			i = j;	
 		}//end comments
 		else
 		{
