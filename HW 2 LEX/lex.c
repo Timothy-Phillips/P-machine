@@ -275,11 +275,11 @@ lexeme *lexanalyzer(char *input)
 				{
 					break;
 				}//end if else
-				// i = j;
+				i = j;
 				list[lex_index] = *(constructLex(ident, 0, identsym));
 				lex_index++;
 			}//end for loop
-			i += identLength;
+			// i += identLength;
 		}//end identifiers
 		else if(isdigit(token) != 0)
 		{
