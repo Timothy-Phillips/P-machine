@@ -184,7 +184,6 @@ lexeme *lexanalyzer(char *input)
 		{
 			list[lex_index] = *(constructLex("divsym", 20, divsym));
 			lex_index++;
-			i += 2;
 			continue;
 		}
 		else if (token == '%')
@@ -224,7 +223,7 @@ lexeme *lexanalyzer(char *input)
 		{
 			list[lex_index] = *(constructLex("oddsym", 28, oddsym));
 			lex_index++;
-			i += 3;
+			i += 2;
 		}
 		else if (token == '(')
 		{
@@ -330,6 +329,7 @@ lexeme *lexanalyzer(char *input)
 		else
 		{
 			printlexerror(1);
+			return NULL;
 		}
 	}//end for loop
 	printtokens();
