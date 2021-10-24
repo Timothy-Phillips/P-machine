@@ -152,7 +152,7 @@ lexeme *lexanalyzer(char *input)
 		// check for ":=", throw error if ":x"
 		else if (input[i] == ':')
 		{
-			if (lookahead(&input[i], ":="))
+			if (input[i+1] == '=')
 			{
 				list[lex_index] = *(constructLex("assignsym", 16, assignsym));
 				lex_index++;
