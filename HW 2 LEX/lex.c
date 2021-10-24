@@ -79,7 +79,7 @@ lexeme *lexanalyzer(char *input)
 			i += 9;
 			continue;
 		}
-		else if (lookahead(&input[i], "begin "))
+		else if (lookahead(&input[i], "begin\n"))
 		{
 			list[lex_index] = *(constructLex("beginsym", 4, beginsym));
 			lex_index++;
