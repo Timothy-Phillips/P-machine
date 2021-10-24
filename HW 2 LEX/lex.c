@@ -58,21 +58,21 @@ lexeme *lexanalyzer(char *input)
 		//special symbols
 		//== !=  <  <=  >  >=  %  *  /  +  -  (  )  ,  .  ;  :=			
 		// 33 Special Symbols 
-		else if (lookahead(&input[i], "const "))
+		else if (lookahead(&input[i], "const"))
 		{
 			list[lex_index] = *(constructLex("constsym", 1, constsym));
 			lex_index++;
 			i += 5;
 			continue;
 		}
-		else if (lookahead(&input[i], "var "))
+		else if (lookahead(&input[i], "var"))
 		{
 			list[lex_index] = *(constructLex("varsym", 2, varsym));
 			lex_index++;
 			i += 3;
 			continue;
 		}
-		else if (lookahead(&input[i], "procedure "))
+		else if (lookahead(&input[i], "procedure"))
 		{
 			list[lex_index] = *(constructLex("procsym", 3, procsym));
 			lex_index++;
@@ -86,63 +86,63 @@ lexeme *lexanalyzer(char *input)
 			i += 5;
 			continue;
 		}
-		else if (lookahead(&input[i], "end "))
+		else if (lookahead(&input[i], "end"))
 		{
 			list[lex_index] = *(constructLex("endsym", 5, endsym));
 			lex_index++;
 			i += 3;
 			continue;
 		}
-		else if (lookahead(&input[i], "while "))
+		else if (lookahead(&input[i], "while"))
 		{
 			list[lex_index] = *(constructLex("whilesym", 6, whilesym));
 			lex_index++;
 			i += 5;
 			continue;
 		}
-		else if (lookahead(&input[i], "do "))
+		else if (lookahead(&input[i], "do"))
 		{
 			list[lex_index] = *(constructLex("dosym", 7, dosym));
 			lex_index++;
 			i += 2;
 			continue;
 		}
-		else if (lookahead(&input[i], "if "))
+		else if (lookahead(&input[i], "if"))
 		{
 			list[lex_index] = *(constructLex("ifsym", 8, ifsym));
 			lex_index++;
 			i += 2;
 			continue;
 		}
-		else if (lookahead(&input[i], "then "))
+		else if (lookahead(&input[i], "then"))
 		{
 			list[lex_index] = *(constructLex("thensym", 9, thensym));
 			lex_index++;
 			i += 4;
 			continue;
 		}
-		else if (lookahead(&input[i], "else "))
+		else if (lookahead(&input[i], "else"))
 		{
 			list[lex_index] = *(constructLex("elsesym", 10, elsesym));
 			lex_index++;
 			i += 4;
 			continue;
 		}
-		else if (lookahead(&input[i], "call "))
+		else if (lookahead(&input[i], "call"))
 		{
 			list[lex_index] = *(constructLex("callsym", 11, callsym));
 			lex_index++;
 			i += 4;
 			continue;
 		}
-		else if (lookahead(&input[i], "write "))
+		else if (lookahead(&input[i], "write"))
 		{
 			list[lex_index] = *(constructLex("writesym", 12, writesym));
 			lex_index++;
 			i += 5;
 			continue;
 		}
-		else if (lookahead(&input[i], "read "))
+		else if (lookahead(&input[i], "read"))
 		{
 			list[lex_index] = *(constructLex("readsym", 13, readsym));
 			lex_index++;
@@ -180,7 +180,7 @@ lexeme *lexanalyzer(char *input)
 			list[lex_index] = *(constructLex("multsym", 19, multsym));
 			lex_index++;
 		}
-		else if (lookahead(&input[i], "/ "))
+		else if (lookahead(&input[i], "/"))
 		{
 			list[lex_index] = *(constructLex("divsym", 20, divsym));
 			lex_index++;
@@ -220,7 +220,7 @@ lexeme *lexanalyzer(char *input)
 			lex_index++;
 			i++;
 		}
-		else if (lookahead(&input[i], "odd "))
+		else if (lookahead(&input[i], "odd"))
 		{
 			list[lex_index] = *(constructLex("oddsym", 28, oddsym));
 			lex_index++;
@@ -350,6 +350,8 @@ int lookahead(char *input, char *target)
 		if(input[i] != target[i])
 			return 0;
 	}
+	if (!isspace(input[targetLength]))
+		return 0;
 	return 1;
 }
 
