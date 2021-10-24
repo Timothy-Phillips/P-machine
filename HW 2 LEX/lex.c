@@ -199,7 +199,7 @@ lexeme *lexanalyzer(char *input)
 		}
 		else if (lookahead(&input[i], "!="))
 		{
-			list[lex_index] = *(constructLex("", 23, eqlsym));
+			list[lex_index] = *(constructLex("neqsym", 23, neqsym));
 			lex_index++;
 			i++;
 		}
