@@ -270,7 +270,7 @@ lexeme *lexanalyzer(char *input)
 			for(int j = i + 1; j < length;j++)
 			{
 				
-				if(isalpha(input[j]) != 0 || isdigit(input[j] != 0))	
+				if(isalpha(input[j]) != 0 || isdigit(input[j]) != 0)	
 				{
 					if(identLength >= MAX_IDENT_LEN)	
 					{
