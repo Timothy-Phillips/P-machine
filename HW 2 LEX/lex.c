@@ -358,7 +358,7 @@ int lookahead(char *input, char *target)
 		if(input[i] != target[i])
 			return 0;
 	}
-	if(isalpha(input[targetLength]) == 0 || isdigit(input[targetLength] == 0))
+	if(isalpha(input[targetLength]) != 0 || isdigit(input[targetLength] != 0))
 		return 0;
 
 	return 1;
