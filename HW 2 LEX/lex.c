@@ -350,7 +350,7 @@ int lookahead(char *input, char *target)
 		if(input[i] != target[i])
 			return 0;
 	}
-	if (!isspace(input[targetLength]))
+	if (!isspace(input[targetLength] && input[targetLength] != ';' && input[targetLength] != '.'))
 		return 0;
 	return 1;
 }
