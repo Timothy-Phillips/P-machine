@@ -197,6 +197,12 @@ lexeme *lexanalyzer(char *input)
 			lex_index++;
 			i++;
 		}
+		else if (lookahead(&input[i], "!="))
+		{
+			list[lex_index] = *(constructLex("", 23, eqlsym));
+			lex_index++;
+			i++;
+		}
 		else if (token == '<')
 		{
 			if (input[i+1] == '=')
@@ -345,11 +351,11 @@ lexeme *lexanalyzer(char *input)
 				j++;
 			i = j;	
 		}//end comments
-		// else
-		// {
-		// 	printlexerror(1);
-		// 	return NULL;
-		// }
+		else
+		{
+			printlexerror(1);
+			return NULL;
+		}
 	}//end for loop
 	printtokens();
 	return list;
