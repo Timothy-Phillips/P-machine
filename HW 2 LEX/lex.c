@@ -62,91 +62,91 @@ lexeme *lexanalyzer(char *input)
 		{
 			list[lex_index] = *(constructLex("constsym", 1, constsym));
 			lex_index++;
-			i += 5;
+			i += 4;
 			continue;
 		}
 		else if (lookahead(&input[i], "var"))
 		{
 			list[lex_index] = *(constructLex("varsym", 2, varsym));
 			lex_index++;
-			i += 3;
+			i += 2;
 			continue;
 		}
 		else if (lookahead(&input[i], "procedure"))
 		{
 			list[lex_index] = *(constructLex("procsym", 3, procsym));
 			lex_index++;
-			i += 9;
+			i += 8;
 			continue;
 		}
 		else if (lookahead(&input[i], "begin\n"))
 		{
 			list[lex_index] = *(constructLex("beginsym", 4, beginsym));
 			lex_index++;
-			i += 5;
+			i += 4;
 			continue;
 		}
 		else if (lookahead(&input[i], "end"))
 		{
 			list[lex_index] = *(constructLex("endsym", 5, endsym));
 			lex_index++;
-			i += 3;
+			i += 2;
 			continue;
 		}
 		else if (lookahead(&input[i], "while"))
 		{
 			list[lex_index] = *(constructLex("whilesym", 6, whilesym));
 			lex_index++;
-			i += 5;
+			i += 4;
 			continue;
 		}
 		else if (lookahead(&input[i], "do"))
 		{
 			list[lex_index] = *(constructLex("dosym", 7, dosym));
 			lex_index++;
-			i += 2;
+			i += 1;
 			continue;
 		}
 		else if (lookahead(&input[i], "if"))
 		{
 			list[lex_index] = *(constructLex("ifsym", 8, ifsym));
 			lex_index++;
-			i += 2;
+			i += 1;
 			continue;
 		}
 		else if (lookahead(&input[i], "then"))
 		{
 			list[lex_index] = *(constructLex("thensym", 9, thensym));
 			lex_index++;
-			i += 4;
+			i += 3;
 			continue;
 		}
 		else if (lookahead(&input[i], "else"))
 		{
 			list[lex_index] = *(constructLex("elsesym", 10, elsesym));
 			lex_index++;
-			i += 4;
+			i += 3;
 			continue;
 		}
 		else if (lookahead(&input[i], "call"))
 		{
 			list[lex_index] = *(constructLex("callsym", 11, callsym));
 			lex_index++;
-			i += 4;
+			i += 3;
 			continue;
 		}
 		else if (lookahead(&input[i], "write"))
 		{
 			list[lex_index] = *(constructLex("writesym", 12, writesym));
 			lex_index++;
-			i += 5;
+			i += 4;
 			continue;
 		}
 		else if (lookahead(&input[i], "read"))
 		{
 			list[lex_index] = *(constructLex("readsym", 13, readsym));
 			lex_index++;
-			i += 5;
+			i += 3;
 			continue;
 		}
 		// check for ":=", throw error if ":x"
