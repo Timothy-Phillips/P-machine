@@ -199,17 +199,23 @@ lexeme *lexanalyzer(char *input)
 		}
 		else if (token == '<')
 		{
-			list[lex_index] = *(constructLex("lsssym", 24, lsssym));
-			lex_index++;
+			if (input[i+1] == '=')
+			{
+				list[lex_index] = *(constructLex("leqsym", 25, leqsym));
+				lex_index++;
+				i++;
+			}
+			else
+			{
+				list[lex_index] = *(constructLex("lsssym", 24, lsssym));
+				lex_index++;
+			}
+			
 		}
-		else if (lookahead(&input[i], "<="))
-		{
-			list[lex_index] = *(constructLex("leqsym", 25, leqsym));
-			lex_index++;
-			i++;
-		}
+
 		else if (token == '>')
 		{
+			if()
 			list[lex_index] = *(constructLex("gtrsym", 26, gtrsym));
 			lex_index++;
 		}
