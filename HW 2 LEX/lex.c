@@ -215,16 +215,20 @@ lexeme *lexanalyzer(char *input)
 
 		else if (token == '>')
 		{
-			if()
-			list[lex_index] = *(constructLex("gtrsym", 26, gtrsym));
-			lex_index++;
+			if (input[i+1] == '=')
+			{
+				list[lex_index] = *(constructLex("geqsym", 27, geqsym));
+				lex_index++;
+				i++;
+			}
+			else
+			{
+				list[lex_index] = *(constructLex("gtrsym", 26, gtrsym));
+				lex_index++;	
+			}
+
 		}
-		else if (lookahead(&input[i], ">="))
-		{
-			list[lex_index] = *(constructLex("geqsym", 27, geqsym));
-			lex_index++;
-			i++;
-		}
+
 		else if (lookahead(&input[i], "odd"))
 		{
 			list[lex_index] = *(constructLex("oddsym", 28, oddsym));
