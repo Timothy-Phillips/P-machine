@@ -316,6 +316,7 @@ lexeme *lexanalyzer(char *input)
 				else if(isalpha(input[j]) != 0)
 				{
 					printlexerror(2);	
+					return NULL;
 				}
 				else
 				{
