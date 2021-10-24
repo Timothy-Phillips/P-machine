@@ -260,13 +260,21 @@ lexeme *lexanalyzer(char *input)
 			for(int j = i + 1; j < length;j++)
 			{
 				
-				if(isalpha(input[j]) != 0)	
+				if(isalpha(input[j]) != 0 || isdigit(input[j] != 0))	
 				{
 					if(identLength >= MAX_IDENT_LEN)	
 					{
 						printlexerror(4);
 						return NULL;
 					}
+					// if(input[j] >=  'A')
+					// {
+					// 	ident[identLength] = input[j];
+					// }
+					// else
+					// {
+					// }
+
 					ident[identLength] = input[j];
 					identLength++;
 				}
@@ -350,7 +358,7 @@ int lookahead(char *input, char *target)
 		if(input[i] != target[i])
 			return 0;
 	}
-	if(isalpha(input[targetLength]) == 0)
+	if(isalpha(input[targetLength]) == 0 || isdigit(input[targetLength]))
 		return 0;
 
 	return 1;
