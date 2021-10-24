@@ -350,10 +350,10 @@ int lookahead(char *input, char *target)
 		if(input[i] != target[i])
 			return 0;
 	}
-	if (input[targetLength] == ';' || input[targetLength] == '.' || isspace(input[targetLength]))
-		return 1;
-	else
+	if(isalpha(input[targetLength]) == 0)
 		return 0;
+
+	return 1;
 }
 
 // lexeme contructor
