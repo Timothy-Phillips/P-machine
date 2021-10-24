@@ -180,7 +180,7 @@ lexeme *lexanalyzer(char *input)
 			list[lex_index] = *(constructLex("multsym", 19, multsym));
 			lex_index++;
 		}
-		else if (lookahead(&input[i], "/"))
+		else if (token == '/' && input[i+1] != '/')
 		{
 			list[lex_index] = *(constructLex("divsym", 20, divsym));
 			lex_index++;
