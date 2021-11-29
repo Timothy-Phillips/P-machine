@@ -5,6 +5,8 @@
 
 #define MAX_CODE_LENGTH 1000
 #define MAX_SYMBOL_COUNT 100
+#define UNMARKED -1
+
 
 instruction *code;
 int cIndex;
@@ -17,6 +19,14 @@ void printparseerror(int err_code);
 void printsymboltable();
 void printassemblycode();
 
+//custom globals
+int lexLevel;
+//custiom functions
+void Block(lexeme* list);
+void constant();
+int variable(lexeme* list);
+void Program();
+
 instruction *parse(lexeme *list, int printTable, int printCode)
 {
 	code = NULL;
@@ -26,8 +36,254 @@ instruction *parse(lexeme *list, int printTable, int printCode)
 		WHEN COPYING IT TO THE PAS
 	code[cIndex].opcode = -1;
 	*/
+	//TODO Program
+	Program();
+	//TODO Block
+	Block();
+
+	//TODO Const-Declaration
+
+	//TODO Var-Declaration
+
+	//TODO Procedure-Declaration
+
+	//TODO Statement
+
+	//TODO Condition
+
+	//TODO Expression
+
+	//TODO Term
+
+	//TODO Factor
+
+	
+
 	return code;
 }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//custom functions
+void Program()
+{
+	emit(7, lexLevel, 0) // Not sure if this is right, refer to assignmnet FAQ
+	addToSymbolTable(3, "main", 0, 0, 0, UNMARKED);
+	lexLevel = -1;
+	Block()
+	int token
+	if()
+}
+void Block(lexeme* list)
+{
+	//Increment level
+	lexLevel++;
+	//procedure_idx = current symbol table index - 1
+	int procedure_idx = tIndex - 1;
+
+	//	TODO CONST-DECLARATION			not sure about these
+	//	x = VAR-DECLARATION
+	int x = variable(list);//x = number of variables
+	//	TODO PROCEDURE-DECLARATION
+
+	//table[procedure_idx].addr = current code index * 3
+	table[procedure_idx].addr = cIndex * 3;
+	//if level == 0
+	if(lexLevel == 0)
+	{
+		//emit INC (M = x)
+		emit(6, lexLevel, x);
+	}
+	else
+	{
+		//emit INC (M = x + 3)
+		emit(6, lexLevel, x+3);
+	}
+
+	/* 	TODO
+	STATEMENT
+	MARK
+	*/	
+
+	//Decrement level 
+	lexLevel--;
+}
+//CONST-Declaration
+void constant(lexeme* list)
+{
+	lexeme curToken = list[lexLevel];
+	if(curToken.type == constsym)
+	{
+		do
+		{
+			lexLevel++;
+			curToken = list[lexLevel];
+			if (curToken.type != identsym)
+			{
+				printparseerror(7);
+			}
+			int symidx = MULTIPLEDECLARATIONCHECK(curToken.type);
+			if(symidx != -1)
+			{
+				printparseerror(19);
+			}
+			//save ident name
+
+			lexLevel++;
+			curToken = list[lexLevel];
+			if (curToken.type != assignsym)
+			{
+				printparseerror(6);
+			}
+			lexLevel++;
+			curToken = list[lexLevel];
+			if (curToken.type != numbersym)
+			{
+				printparseerror(11);
+			}
+			//add to symbol table (kind 1, saved name, number, level, 0, unmarked)
+			addToSymbolTable(1, curToken.name, curToken.value, lexLevel, 0, UNMARKED);
+			lexLevel++;
+			curToken = list[lexLevel];
+		} while (curToken.type == commasym);
+		  if (curToken.type != semicolonsym)
+		  {
+			  if (curToken.type == identsym)
+			  {
+				  printparseerror(13);
+			  }
+			  else
+			  {
+				  printparseerror(14);
+			  }
+		  }
+		  lexLevel++;
+		  curToken = list[lexLevel];
+		}
+		
+}
+//Variable-Declaration
+int variable(lexeme* list)
+{
+	lexeme curToken = list[lexLevel];
+
+	int numVars = 0;
+
+	//if token == varsym
+	if(curToken.type == varsym)
+	{
+		do
+		{
+			numVars++;
+			lexLevel++;
+			curToken = list[lexLevel];
+
+			//if token != identsym
+			if(curToken.type != identsym)
+			{
+				printparseerror(3);
+			}//end if
+			
+			//symidx = MULTIPLEDECLARATIONCHECK(token)
+			int symidx = MULTIPLEDECLARATIONCHECK(curToken);
+			if(symidx != -1)
+			{
+				printparseerror(19)
+			}//end if
+			
+			if(lexLevel == 0)
+			{
+				//add to symbol table (kind 2, ident, 0, level, numVars-1, unmarked)
+				addToSymbolTable(2, curToken.name, 0, lexLevel, numVars-1, UNMARKED);
+			}
+			else
+			{
+				//add to symbol table (kind 2, ident, 0, level, numVars+2, unmarked)
+				addToSymbolTable(2, curToken.name, 0, lexLevel, numVars+2, UNMARKED);
+			}
+			//get next token
+			lexLevel++;
+			curToken = list[lexLevel];
+		} while (curToken.type == commasym);	//while token == commasym
+		
+		if(curToken.type != semicolonsym)
+		{
+			if(curToken.type == identsym)
+			{
+				printparseerror(13);
+			}
+			else
+			{
+				printparseerror(14);
+			}//end inner if else
+		}//end middle if
+
+		//get next token NOTSURE
+		lexLevel++;
+
+	}//end if
+	return numVars;
+}
+//Procedure-Declaration
+void procedure(lexeme* list)
+{
+	lexeme curToken = list[lexLevel];
+	while (curToken.type == procsym)
+	{
+		lexLevel++;
+		curToken = list[lexLevel];
+		if (curToken.type != identsym)
+		{
+			printparseerror(7);
+		}
+		int symidx = MULTIPLEDECLARATIONCHECK(curToken);
+		if (symidx != -1)
+		{
+			printparseerror(19);
+		}
+		//add to symbol table (kind 3, ident, 0, level, 0, unmarked)
+		addToSymbolTable(3, curToken.name, 0, lexLevel, 0, UNMARKED);
+		lexLevel++;
+		curToken = list[lexLevel];
+		if (curToken.type != semicolonsym)
+		{
+			printparseerror(14);
+		}
+		lexLevel++;
+		curToken = list[lexLevel];
+		Block();
+		if (curToken.type != semicolonsym)
+		{
+			printparseerror(14);
+		}
+		lexLevel++;
+		curToken = list[lexLevel];
+		emit();
+
+	}
+}
+
+void statement()
+{
+	
+}
+void condition()
+{
+
+}
+void expression()
+{
+	
+}
+void term()
+{
+	
+}
+void factor()
+{
+	
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//given functions
 
 
 void emit(int opname, int level, int mvalue)
