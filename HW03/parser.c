@@ -6,7 +6,7 @@
 #define MAX_CODE_LENGTH 1000
 #define MAX_SYMBOL_COUNT 100
 #define UNMARKED -1
-
+#define MARKED 1
 
 instruction *code;
 int cIndex;
@@ -22,10 +22,18 @@ void printassemblycode();
 //custom globals
 int lexLevel;
 //custiom functions
+void Program(lexeme* list);
 void Block(lexeme* list);
-void constant();
+void constant(lexeme* list);
 int variable(lexeme* list);
-void Program();
+void expression(lexeme* list);
+void term(lexeme* list);
+void factor(lexeme* list);
+
+int FINDSYMBOL(lexeme token, int kind);
+void MARK();
+int MULTIPLEDECLARATIONCHECK(lexeme token);
+
 
 instruction *parse(lexeme *list, int printTable, int printCode)
 {
@@ -63,14 +71,28 @@ instruction *parse(lexeme *list, int printTable, int printCode)
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //custom functions
-void Program()
+void Program(lexeme* list)
 {
-	emit(7, lexLevel, 0) // Not sure if this is right, refer to assignmnet FAQ
+	emit(7, lexLevel, 0); // Emit JMP
 	addToSymbolTable(3, "main", 0, 0, 0, UNMARKED);
 	lexLevel = -1;
-	Block()
-	int token
-	if()
+	Block(list);
+	lexeme curToken = list[lexLevel];
+	
+	if(curToken.type != periodsym)
+		printparseerror(1);
+		
+	emit(9, 0, 3); // Emit Halt
+	
+	for (int i = 0; i < cIndex; i++)
+	{
+		// if opcode is Call
+		if (code[i]->opcode == 5) 
+			code[i].m = table[code[i].m].addr;
+			
+		code[0].m = table[0].addr;
+	}
+	
 }
 void Block(lexeme* list)
 {
@@ -79,11 +101,9 @@ void Block(lexeme* list)
 	//procedure_idx = current symbol table index - 1
 	int procedure_idx = tIndex - 1;
 
-	//	TODO CONST-DECLARATION			not sure about these
-	//	x = VAR-DECLARATION
+	constant(list);
 	int x = variable(list);//x = number of variables
-	//	TODO PROCEDURE-DECLARATION
-
+	procedure(list);
 	//table[procedure_idx].addr = current code index * 3
 	table[procedure_idx].addr = cIndex * 3;
 	//if level == 0
@@ -98,10 +118,9 @@ void Block(lexeme* list)
 		emit(6, lexLevel, x+3);
 	}
 
-	/* 	TODO
-	STATEMENT
-	MARK
-	*/	
+
+	statement(list);
+	mark();
 
 	//Decrement level 
 	lexLevel--;
@@ -120,7 +139,7 @@ void constant(lexeme* list)
 			{
 				printparseerror(7);
 			}
-			int symidx = MULTIPLEDECLARATIONCHECK(curToken.type);
+			int symidx = MULTIPLEDECLARATIONCHECK(curToken);
 			if(symidx != -1)
 			{
 				printparseerror(19);
@@ -186,7 +205,7 @@ int variable(lexeme* list)
 			int symidx = MULTIPLEDECLARATIONCHECK(curToken);
 			if(symidx != -1)
 			{
-				printparseerror(19)
+				printparseerror(19);
 			}//end if
 			
 			if(lexLevel == 0)
@@ -249,43 +268,476 @@ void procedure(lexeme* list)
 		}
 		lexLevel++;
 		curToken = list[lexLevel];
-		Block();
+		Block(list);
 		if (curToken.type != semicolonsym)
 		{
 			printparseerror(14);
 		}
 		lexLevel++;
 		curToken = list[lexLevel];
-		emit();
+		emit(2, lexLevel, 0);
 
 	}
 }
 
-void statement()
+void statement(lexeme* list)
 {
-	
-}
-void condition()
-{
+	lexeme curToken = list[lexLevel];
+	int symIdx = 0;
+	if(curToken.type == identsym)
+	{
+		symIdx = FINDSYMBOL(curToken, 2);
+ 		if (symIdx == -1)
+		{
+ 			if (FINDSYMBOL(curToken, 1) != FINDSYMBOL (curToken, 3))
+			{
+				printparseerror(18);
+			}
+			else
+			{
+				printparseerror(19);
+			}//end if else
+		}//end if
+
+		//get next token
+		lexLevel++;
+		curToken = list[lexLevel];
+
+ 		if (curToken.type != assignsym)
+		{
+			printparseerror(5);
+		}//end if
+		//get next token
+		lexLevel++;
+		curToken = list[lexLevel];		
+		
+		expression(list);
+		//emit STO (L = level – table[symIdx].level, M = table[symIdx].addr)
+		emit(4, (lexLevel - table[symIdx].level), table[symIdx].addr);
+		return;
+	}//end outer if				 
+
+	if(curToken.type == beginsym)
+	{
+		do
+		{
+			//get next token
+			lexLevel++;
+			curToken = list[lexLevel];
+			statement(list);
+		} while (curToken.type == semicolonsym);// while token == semicolonsym
+
+		if(curToken.type != endsym)
+		{
+			//if token == identsym, beginsym, ifsym, whilesym, readsym, writesym,or callsym
+			if(curToken.type == identsym || curToken.type == beginsym || curToken.type == ifsym || curToken.type == whilesym || curToken.type == readsym || curToken.type == writesym || curToken.type == callsym)
+			{
+				printparseerror(15);
+			}
+			else
+			{
+				printparseerror(16);
+			}//end if else			
+		}//end if
+
+		//get next token
+		lexLevel++;
+		curToken = list[lexLevel];		
+		return;
+	}//end if
+	if(curToken.type == ifsym)
+	{
+		//get next token
+		lexLevel++;
+		curToken = list[lexLevel];	
+
+		condition(list);
+
+		int jpcIdx = cIndex;
+		emit(8, 0, jpcIdx); //NOTSURE
+
+		if(curToken.type != thensym)
+		{
+			printparseerror(8);
+		}
+		//get next token
+		lexLevel++;
+		curToken = list[lexLevel];	
+		
+		statement(list);
+		
+ 		if(curToken.type == elsesym)
+		{
+			int jmpIdx = cIndex;
+			emit(7, 0, jmpIdx); //NOTSURE
+			code[jpcIdx].m = cIndex * 3;
+			statement(list);
+			code[jmpIdx].m = cIndex * 3;
+		}//end if
+		else
+		{
+			code[jpcIdx].m = cIndex * 3;
+		}
+		return;
+	}//end ifsym
+	if(curToken.type == whilesym)
+	{
+		// get next token
+		lexLevel++;
+		curToken = list[lexLevel];
+
+		int loopIdx = cIndex;
+		condition(list);
+		if(curToken.type != dosym)
+		{
+			printparseerror(9);
+		}
+		// get next token
+		lexLevel++;
+		curToken = list[lexLevel];
+
+		int jpcIdx = cIndex;
+		emit(8, 0, jpcIdx);
+		statement(list);
+		
+		emit(9, 0, loopIdx * 3);
+		code[jpcIdx].m = cIndex * 3;
+		return;		
+	}//end whilesym
+
+	if(curToken.type == readsym)
+	{
+		// get next token
+		lexLevel++;
+		curToken = list[lexLevel];	
+		if(curToken.type != identsym)
+		{
+			printparseerror(6);
+		}//end if
+		int symIdx = FINDSYMBOL(curToken, 2);
+		if(symIdx == -1)
+		{
+			if(FINDSYMBOL(curToken,1) != FINDSYMBOL(curToken,3))
+			{
+				printparseerror(18);
+			}
+			else
+			{
+				printparseerror(19);
+			}//end if else
+		}//end if
+		
+		// get next token
+		lexLevel++;
+		curToken = list[lexLevel];	
+
+		emit(9, 0, 2);
+	// 	emit STO (L = level – table[symIdx].level, M = table[symIdx].addr)
+		emit(4, (lexLevel - table[symIdx].level), table[symIdx].addr);
+		return;
+	}//end readsym
+	if(curToken.type == writesym)
+	{
+		// get next token
+		lexLevel++;
+		curToken = list[lexLevel];	
+
+		expression(list);
+		emit(9, 0, 1);
+		return;
+	// 	return
+
+	}//end writesym
+	if(curToken.type == callsym)
+	{
+		// get next token
+		lexLevel++;
+		curToken = list[lexLevel];	
+
+		int symIdx = FINDSYMBOL(curToken, 3);
+		if(symIdx == -1)
+		{
+			if(FINDSYMBOL(curToken, 1) != FINDSYMBOL(curToken, 2))
+			{
+				printparseerror(18);
+			}
+			else
+			{
+				printparseerror(19);
+			}
+		}//end if
+
+		// get next token
+		lexLevel++;
+		curToken = list[lexLevel];	
+		//emit CAL (L = level – table[symIdx].level, symIdx)
+		emit(5, lexLevel- table[symIdx].level, symIdx);
+	}//end callsym
 
 }
-void expression()
+void condition(lexeme* list)
 {
-	
+	lexeme curToken = list[lexLevel];
+	if (curToken.type == oddsym)
+	{
+		lexLevel++;
+		curToken = list[lexLevel];
+		expression(list);
+		emit(2, lexLevel, 6);
+	}
+	else
+	{
+		expression(list);
+		if (curToken.type == eqlsym)
+		{
+			lexLevel++;
+			curToken = list[lexLevel];
+			expression(list);
+			emit(2, lexLevel, 8);
+		}
+		else if (curToken.type == neqsym)
+		{
+			lexLevel++;
+			curToken = list[lexLevel];
+			expression(list);
+			emit(2, lexLevel, 9);
+		}
+		else if (curToken.type == lsssym)
+		{
+			lexLevel++;
+			curToken = list[lexLevel];
+			expression(list);
+			emit(2, lexLevel, 10);
+		}
+		else if (curToken.type == leqsym)
+		{
+			lexLevel++;
+			curToken = list[lexLevel];
+			expression(list);
+			emit(2, lexLevel, 11);
+		}
+		else if (curToken.type == gtrsym)
+		{
+			lexLevel++;
+			curToken = list[lexLevel];
+			expression(list);
+			emit(2, lexLevel, 12);
+		}
+		else if (curToken.type == geqsym)
+		{
+			lexLevel++;
+			curToken = list[lexLevel];
+			expression(list);
+			emit(2, lexLevel, 13);
+		}
+		else
+		{
+			printparseerror(10);
+		}
+	}
 }
-void term()
+void expression(lexeme* list)
 {
+	lexeme curToken = list[lexLevel];
 	
-}
-void factor()
-{
-	
-}
+	if (curToken.type == subsym)
+	{
+		lexLevel++;
+		curToken = list[lexLevel];
+		term(list);
+		emit(2, 0, 1); // Emit Neg
 
+		while (curToken.type == addsym || curToken.type == subsym)
+		{
+			if (curToken.type == addsym)
+			{
+				lexLevel++;
+				curToken = list[lexLevel];
+				term(list);
+				emit(2, 0, 2);  // Emit Add
+			}
+			else
+			{
+				lexLevel++;
+				curToken = list[lexLevel];
+				term(list);
+				emit(2, 0, 3);  // Emit Sub
+			}
+		}
+	}
+	
+	else
+	{
+		if (curToken.type == addsym)
+		{
+			lexLevel++;
+			curToken = list[lexLevel];
+		}
+		
+		term(list);
+		while (curToken.type == addsym || curToken.type == subsym)
+		{
+			if (curToken.type == addsym)
+			{
+				lexLevel++;
+				curToken = list[lexLevel];
+				term(list);
+				emit(2, 0, 2); // Emit Add
+			}
+			else
+			{
+				lexLevel++;
+				curToken = list[lexLevel];
+				term(list);
+				emit(2, 0, 3); // Emit Sub
+			}
+		}
+	}
+	// FINISH THIS LINE vvv
+	if (curToken.type == )
+	{
+		printparseerror(17);  // ????
+	}
+}
+void term(lexeme* list)
+{
+	factor(list);
+	lexeme curToken = list[lexLevel];
+	while (curToken.type == multsym || curToken.type == divsym || curToken.type == modsym)
+	{
+		if (curToken.type == multsym)
+		{
+			lexLevel++;
+			curToken = list[lexLevel];
+			factor(list);
+			emit(2, 0, 4); // Emit Mul
+		}
+		else if (curToken.type == divsym)
+		{
+			lexLevel++;
+			curToken = list[lexLevel];
+			factor(list);
+			emit(2, 0, 5); // Emit Div
+		}
+		else
+		{
+			lexLevel++;
+			curToken = list[lexLevel];
+			factor(list);
+			emit(2, 0, 7); // Emit Mod
+		}
+	}
+}
+void factor(lexeme* list)
+{
+	lexeme curToken = list[lexLevel];
+	int symIdx_var = 0;
+	int symIdx_const = 0;
+	if (curToken.type == identsym)
+	{
+		symIdx_var = FINDSYMBOL(curToken, 2);
+		symIdx_const = FINDSYMBOL(curToken, 1);
+		if ((symIdx_var == -1) && (symIdx_const == -1))
+		{
+			if (FINDSYMBOL(curToken, 3) != -1)
+			{
+				printparseerror(14);
+			}
+			else
+			{
+				printparseerror(19);
+			}
+		if (symIdx_var == -1)
+		{
+			int m = table[symIdx_const].val;
+			emit(1, 0, m);
+		}
+		else if ((symIdx_const == -1) || (table[symIdx_var].level) > table[symIdx_const].level)
+		{
+			int l = lexLevel - table[symIdx_var].level;
+			int m = table[symIdx_var].addr;
+			emit(3,l, m);
+		}
+		else
+		{
+			int m = table[symIdx_const].val;
+			emit(1, 0, m);
+		}
+		lexLevel++;
+		curToken = list[lexLevel];
+	else if (curToken.type == numbersym)
+	{
+		emit(1, 0, m);
+		lexLevel++;
+		curToken = list[lexLevel];
+	}
+	else if (curToken.type == lparensym)
+	{
+		lexLevel++;
+		curToken = list[lexLevel];
+		expression(list);
+		if (curToken.type != rparensym)
+		{
+			printparseerror(12);
+		}
+		lexLevel++;
+		curToken = list[lexLevel];
+	}
+	else
+	{
+		printparseerror(18);
+	}
+		}
+	}
+}
+int FINDSYMBOL(lexeme token, int kind)
+{
+	int result = 0;
+	for(int x = 0; x < tIndex; x++)
+	{
+		if(strcmp(token.name, table[x].name) == 0 && table[x].kind == kind && table[x].mark == UNMARKED)
+		{
+			result = table[x].level;
+		}//end if
+	}//end for loop
+	return result;
+}//end findSymbol;
+void MARK()
+{
+	for(int x = tIndex - 1; x >= 0; x--)
+	{
+		if(table[x].mark == UNMARKED)
+		{
+			if(table[x].level == lexLevel)
+			{
+				table[x].mark = MARKED;
+			}//end if
+			else if(table[x].level < lexLevel)
+			{
+				return;
+			}
+		}//end if
+	}//end for loop
+}//end MARK
+int MULTIPLEDECLARATIONCHECK(lexeme token)
+{
+	for(int x  = 0; x < tIndex; x++)
+	{
+		if(strcmp(token.name, table[x].name) == 0)
+		{
+			if(table[x].mark != UNMARKED)
+			{
+				if(table[x].level == lexLevel)
+				{
+					return x;
+				}//end inner if
+			}//end middle if
+		}//end outer if
+	}//end for loop
+	return -1;
+}//end multippledeclationcheck
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //given functions
-
-
 void emit(int opname, int level, int mvalue)
 {
 	code[cIndex].opcode = opname;
