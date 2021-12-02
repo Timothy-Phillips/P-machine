@@ -47,6 +47,7 @@ instruction *parse(lexeme *list, int printTable, int printCode)
 		WHEN COPYING IT TO THE PAS
 	*/
 	cIndex = 0;
+	lexLevel = 0;
 	printf("START PARSE");
 	Program(list);
 	code[cIndex].opcode = -1;
