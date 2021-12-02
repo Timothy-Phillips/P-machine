@@ -47,7 +47,7 @@ instruction *parse(lexeme *list, int printTable, int printCode)
 		WHEN COPYING IT TO THE PAS
 	*/
 
-	
+	Program(list);
 	code[cIndex].opcode = -1;
 
 	return code;
