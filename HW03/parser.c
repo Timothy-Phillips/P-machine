@@ -29,6 +29,9 @@ int variable(lexeme* list);
 void expression(lexeme* list);
 void term(lexeme* list);
 void factor(lexeme* list);
+void procedure(lexeme* list);
+void statement(lexeme* list);
+void condition(lexeme* list);
 
 int FINDSYMBOL(lexeme token, int kind);
 void MARK();
@@ -43,26 +46,6 @@ instruction *parse(lexeme *list, int printTable, int printCode)
 		vm.o THIS LINE IS HOW THE VM KNOWS WHERE THE CODE ENDS
 		WHEN COPYING IT TO THE PAS
 	*/
-	//TODO Program
-	Program();
-	//TODO Block
-	Block();
-
-	//TODO Const-Declaration
-
-	//TODO Var-Declaration
-
-	//TODO Procedure-Declaration
-
-	//TODO Statement
-
-	//TODO Condition
-
-	//TODO Expression
-
-	//TODO Term
-
-	//TODO Factor
 
 	
 	code[cIndex].opcode = -1;
@@ -87,7 +70,7 @@ void Program(lexeme* list)
 	for (int i = 0; i < cIndex; i++)
 	{
 		// if opcode is Call
-		if (code[i]->opcode == 5) 
+		if (code[i].opcode == 5) 
 			code[i].m = table[code[i].m].addr;
 			
 		code[0].m = table[0].addr;
@@ -120,7 +103,7 @@ void Block(lexeme* list)
 
 
 	statement(list);
-	mark();
+	MARK();
 
 	//Decrement level 
 	lexLevel--;
@@ -176,7 +159,7 @@ void constant(lexeme* list)
 		  }
 		  lexLevel++;
 		  curToken = list[lexLevel];
-		}
+	}
 		
 }
 //Variable-Declaration
@@ -596,7 +579,7 @@ void expression(lexeme* list)
 	// FINISH THIS LINE vvv
 	if (curToken.type == rparensym || curToken.type == identsym || curToken.type == numbersym )
 	{
-		printparseerror(17);  // ????
+		printparseerror(17);
 	}
 }
 void term(lexeme* list)
@@ -665,9 +648,10 @@ void factor(lexeme* list)
 		}
 		lexLevel++;
 		curToken = list[lexLevel];
+	}
 	else if (curToken.type == numbersym)
 	{
-		emit(1, 0, m);
+		emit(1, 0, curToken.value);
 		lexLevel++;
 		curToken = list[lexLevel];
 	}
@@ -687,8 +671,7 @@ void factor(lexeme* list)
 	{
 		printparseerror(18);
 	}
-		}
-	}
+}
 }
 int FINDSYMBOL(lexeme token, int kind)
 {
