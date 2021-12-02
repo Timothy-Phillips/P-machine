@@ -128,12 +128,12 @@ void Block(lexeme* list)
 	if(lexLevel == 0)
 	{
 		//emit INC (M = x)
-		emit(6, lexLevel, x);
+		emit(6, 0, x);
 	}
 	else
 	{
 		//emit INC (M = x + 3)
-		emit(6, lexLevel, x+3);
+		emit(6, 0, x+3);
 	}
 
 
