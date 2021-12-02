@@ -41,6 +41,7 @@ int MULTIPLEDECLARATIONCHECK(lexeme token);
 instruction *parse(lexeme *list, int printTable, int printCode)
 {
 	code = calloc(MAX_CODE_LENGTH, sizeof(instruction));
+	table = calloc(MAX_SYMBOL_COUNT, sizeof(symbol));
 	/* this line is EXTREMELY IMPORTANT, you MUST uncomment it
 		when you test your code otherwise IT WILL SEGFAULT in 
 		vm.o THIS LINE IS HOW THE VM KNOWS WHERE THE CODE ENDS
