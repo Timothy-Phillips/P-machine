@@ -12,7 +12,7 @@ instruction *code;
 int cIndex;
 symbol *table;
 int tIndex;
-
+int flag = 0;
 void emit(int opname, int level, int mvalue);
 void addToSymbolTable(int k, char n[], int v, int l, int a, int m);
 void printparseerror(int err_code);
@@ -59,6 +59,10 @@ instruction *parse(lexeme *list, int printTable, int printCode)
 //custom functions
 void Program(lexeme* list)
 {
+	if(flag == 1)
+	{
+		return;
+	}
 	emit(7, lexLevel, 0); // Emit JMP
 	addToSymbolTable(3, "main", 0, 0, 0, UNMARKED);
 	lexLevel = -1;
@@ -67,6 +71,9 @@ void Program(lexeme* list)
 	
 	if(curToken.type != periodsym)
 		printparseerror(1);
+		flag = 1;
+		return;
+
 		
 	emit(9, 0, 3); // Emit Halt
 	
@@ -82,6 +89,10 @@ void Program(lexeme* list)
 }
 void Block(lexeme* list)
 {
+	if(flag == 1)
+	{
+		return;
+	}
 	//Increment level
 	lexLevel++;
 	//procedure_idx = current symbol table index - 1
@@ -114,6 +125,10 @@ void Block(lexeme* list)
 //CONST-Declaration
 void constant(lexeme* list)
 {
+	if(flag == 1)
+	{
+		return;
+	}
 	lexeme curToken = list[lexLevel];
 	if(curToken.type == constsym)
 	{
@@ -124,11 +139,15 @@ void constant(lexeme* list)
 			if (curToken.type != identsym)
 			{
 				printparseerror(7);
+				flag = 1;
+				return;
 			}
 			int symidx = MULTIPLEDECLARATIONCHECK(curToken);
 			if(symidx != -1)
 			{
 				printparseerror(19);
+				flag = 1; 
+				return;
 			}
 			//save ident name
 
@@ -137,12 +156,16 @@ void constant(lexeme* list)
 			if (curToken.type != assignsym)
 			{
 				printparseerror(6);
+				flag = 1;
+				return;
 			}
 			lexLevel++;
 			curToken = list[lexLevel];
 			if (curToken.type != numbersym)
 			{
 				printparseerror(11);
+				flag = 1;
+				return;
 			}
 			//add to symbol table (kind 1, saved name, number, level, 0, unmarked)
 			addToSymbolTable(1, curToken.name, curToken.value, lexLevel, 0, UNMARKED);
@@ -154,10 +177,14 @@ void constant(lexeme* list)
 			  if (curToken.type == identsym)
 			  {
 				  printparseerror(13);
+				  flag = 1;
+				  return;
 			  }
 			  else
 			  {
 				  printparseerror(14);
+				  flag = 1;
+				  return;
 			  }
 		  }
 		  lexLevel++;
@@ -168,6 +195,10 @@ void constant(lexeme* list)
 //Variable-Declaration
 int variable(lexeme* list)
 {
+	if(flag == 1)
+	{
+		return;
+	}
 	lexeme curToken = list[lexLevel];
 
 	int numVars = 0;
@@ -185,6 +216,8 @@ int variable(lexeme* list)
 			if(curToken.type != identsym)
 			{
 				printparseerror(3);
+				flag = 1;
+				return;
 			}//end if
 			
 			//symidx = MULTIPLEDECLARATIONCHECK(token)
@@ -192,6 +225,8 @@ int variable(lexeme* list)
 			if(symidx != -1)
 			{
 				printparseerror(19);
+				flag = 1;
+				return;
 			}//end if
 			
 			if(lexLevel == 0)
@@ -214,10 +249,14 @@ int variable(lexeme* list)
 			if(curToken.type == identsym)
 			{
 				printparseerror(13);
+				flag = 1;
+				return;
 			}
 			else
 			{
 				printparseerror(14);
+				flag = 1;
+				return;
 			}//end inner if else
 		}//end middle if
 
@@ -230,6 +269,10 @@ int variable(lexeme* list)
 //Procedure-Declaration
 void procedure(lexeme* list)
 {
+	if(flag == 1)
+	{
+		return;
+	}
 	lexeme curToken = list[lexLevel];
 	while (curToken.type == procsym)
 	{
@@ -238,11 +281,15 @@ void procedure(lexeme* list)
 		if (curToken.type != identsym)
 		{
 			printparseerror(7);
+			flag = 1;
+			return;
 		}
 		int symidx = MULTIPLEDECLARATIONCHECK(curToken);
 		if (symidx != -1)
 		{
 			printparseerror(19);
+			flag = 1;
+			return;
 		}
 		//add to symbol table (kind 3, ident, 0, level, 0, unmarked)
 		addToSymbolTable(3, curToken.name, 0, lexLevel, 0, UNMARKED);
@@ -251,6 +298,8 @@ void procedure(lexeme* list)
 		if (curToken.type != semicolonsym)
 		{
 			printparseerror(14);
+			flag = 1;
+			return;
 		}
 		lexLevel++;
 		curToken = list[lexLevel];
@@ -258,6 +307,8 @@ void procedure(lexeme* list)
 		if (curToken.type != semicolonsym)
 		{
 			printparseerror(14);
+			flag = 1;
+			return;
 		}
 		lexLevel++;
 		curToken = list[lexLevel];
@@ -268,6 +319,10 @@ void procedure(lexeme* list)
 
 void statement(lexeme* list)
 {
+	if(flag == 1)
+	{
+		return;
+	}
 	lexeme curToken = list[lexLevel];
 	int symIdx = 0;
 	if(curToken.type == identsym)
@@ -278,10 +333,14 @@ void statement(lexeme* list)
  			if (FINDSYMBOL(curToken, 1) != FINDSYMBOL (curToken, 3))
 			{
 				printparseerror(18);
+				flag = 1;
+				return;
 			}
 			else
 			{
 				printparseerror(19);
+				flag = 1;
+				return;
 			}//end if else
 		}//end if
 
@@ -292,6 +351,8 @@ void statement(lexeme* list)
  		if (curToken.type != assignsym)
 		{
 			printparseerror(5);
+			flag = 1;
+			return;
 		}//end if
 		//get next token
 		lexLevel++;
@@ -320,10 +381,14 @@ void statement(lexeme* list)
 			if(curToken.type == identsym || curToken.type == beginsym || curToken.type == ifsym || curToken.type == whilesym || curToken.type == readsym || curToken.type == writesym || curToken.type == callsym)
 			{
 				printparseerror(15);
+				flag = 1;
+				return;
 			}
 			else
 			{
 				printparseerror(16);
+				flag = 1;
+				return;
 			}//end if else			
 		}//end if
 
@@ -346,6 +411,8 @@ void statement(lexeme* list)
 		if(curToken.type != thensym)
 		{
 			printparseerror(8);
+			flag = 1;
+			return;
 		}
 		//get next token
 		lexLevel++;
@@ -378,6 +445,8 @@ void statement(lexeme* list)
 		if(curToken.type != dosym)
 		{
 			printparseerror(9);
+			flag = 1;
+			return;
 		}
 		// get next token
 		lexLevel++;
@@ -400,6 +469,8 @@ void statement(lexeme* list)
 		if(curToken.type != identsym)
 		{
 			printparseerror(6);
+			flag = 1;
+			return;
 		}//end if
 		int symIdx = FINDSYMBOL(curToken, 2);
 		if(symIdx == -1)
@@ -407,10 +478,14 @@ void statement(lexeme* list)
 			if(FINDSYMBOL(curToken,1) != FINDSYMBOL(curToken,3))
 			{
 				printparseerror(18);
+				flag = 1;
+				return;
 			}
 			else
 			{
 				printparseerror(19);
+				flag = 1;
+				return;
 			}//end if else
 		}//end if
 		
@@ -447,10 +522,14 @@ void statement(lexeme* list)
 			if(FINDSYMBOL(curToken, 1) != FINDSYMBOL(curToken, 2))
 			{
 				printparseerror(18);
+				flag = 1;
+				return;
 			}
 			else
 			{
 				printparseerror(19);
+				flag = 1;
+				return;
 			}
 		}//end if
 
@@ -464,6 +543,11 @@ void statement(lexeme* list)
 }
 void condition(lexeme* list)
 {
+	if(flag == 1)
+	{
+		return;
+	}
+
 	lexeme curToken = list[lexLevel];
 	if (curToken.type == oddsym)
 	{
@@ -520,11 +604,17 @@ void condition(lexeme* list)
 		else
 		{
 			printparseerror(10);
+			flag = 1;
+			return;
 		}
 	}
 }
 void expression(lexeme* list)
 {
+	if(flag == 1)
+	{
+		return;
+	}
 	lexeme curToken = list[lexLevel];
 	
 	if (curToken.type == subsym)
@@ -584,10 +674,16 @@ void expression(lexeme* list)
 	if (curToken.type == rparensym || curToken.type == identsym || curToken.type == numbersym )
 	{
 		printparseerror(17);
+		flag = 1;
+		return;
 	}
 }
 void term(lexeme* list)
 {
+	if(flag == 1)
+	{
+		return;
+	}
 	factor(list);
 	lexeme curToken = list[lexLevel];
 	while (curToken.type == multsym || curToken.type == divsym || curToken.type == modsym)
@@ -617,6 +713,10 @@ void term(lexeme* list)
 }
 void factor(lexeme* list)
 {
+	if(flag == 1)
+	{
+		return;
+	}
 	lexeme curToken = list[lexLevel];
 	int symIdx_var = 0;
 	int symIdx_const = 0;
@@ -629,10 +729,14 @@ void factor(lexeme* list)
 			if (FINDSYMBOL(curToken, 3) != -1)
 			{
 				printparseerror(14);
+				flag = 1;
+				return;
 			}
 			else
 			{
 				printparseerror(19);
+				flag = 1;
+				return;
 			}
 		if (symIdx_var == -1)
 		{
@@ -667,6 +771,8 @@ void factor(lexeme* list)
 		if (curToken.type != rparensym)
 		{
 			printparseerror(12);
+				flag = 1;
+				return;
 		}
 		lexLevel++;
 		curToken = list[lexLevel];
@@ -674,6 +780,8 @@ void factor(lexeme* list)
 	else
 	{
 		printparseerror(18);
+						flag = 1;
+				return;
 	}
 }
 }
