@@ -46,7 +46,7 @@ instruction *parse(lexeme *list, int printTable, int printCode)
 		vm.o THIS LINE IS HOW THE VM KNOWS WHERE THE CODE ENDS
 		WHEN COPYING IT TO THE PAS
 	*/
-
+	cIndex = 0;
 	Program(list);
 	code[cIndex].opcode = -1;
 
