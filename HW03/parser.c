@@ -962,7 +962,7 @@ void emit(int opname, int level, int mvalue)
 	code[cIndex].l = level;
 	code[cIndex].m = mvalue;
 	cIndex++;
-	printassemblycode();
+	// printassemblycode();
 }
 
 void addToSymbolTable(int k, char n[], int v, int l, int a, int m)
