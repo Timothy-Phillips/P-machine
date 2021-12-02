@@ -773,6 +773,7 @@ void expression(lexeme* list)
 	// FINISH THIS LINE vvv
 	if (curToken.type == rparensym || /* curToken.type == identsym || */ curToken.type == numbersym )
 	{
+		printsymboltable();
 		printf("\n\n***************************\n\tname:\t%svalue\t%d\ttype:\t",list[lexLevel].name, list[lexLevel].value );
 
 		printparseerror(17);
