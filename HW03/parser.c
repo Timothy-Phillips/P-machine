@@ -417,6 +417,8 @@ void statement(lexeme* list)
 			//if token == identsym, beginsym, ifsym, whilesym, readsym, writesym,or callsym
 			if(curToken.type == identsym || curToken.type == beginsym || curToken.type == ifsym || curToken.type == whilesym || curToken.type == readsym || curToken.type == writesym || curToken.type == callsym)
 			{
+				printf("\n\n***************************\n\tname:\t%svalue\t%d\ttype:\t",list[lexLevel].name, list[lexLevel].value );
+
 				printparseerror(15);
 				flag = 1;
 				return;
