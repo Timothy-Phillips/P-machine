@@ -42,7 +42,6 @@ instruction *parse(lexeme *list, int printTable, int printCode)
 		when you test your code otherwise IT WILL SEGFAULT in 
 		vm.o THIS LINE IS HOW THE VM KNOWS WHERE THE CODE ENDS
 		WHEN COPYING IT TO THE PAS
-	code[cIndex].opcode = -1;
 	*/
 	//TODO Program
 	Program();
@@ -66,6 +65,7 @@ instruction *parse(lexeme *list, int printTable, int printCode)
 	//TODO Factor
 
 	
+	code[cIndex].opcode = -1;
 
 	return code;
 }
@@ -594,7 +594,7 @@ void expression(lexeme* list)
 		}
 	}
 	// FINISH THIS LINE vvv
-	if (curToken.type == )
+	if (curToken.type == rparensym || curToken.type == identsym || curToken.type == numbersym )
 	{
 		printparseerror(17);  // ????
 	}
