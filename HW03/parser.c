@@ -770,7 +770,7 @@ void expression(lexeme* list)
 		}
 	}
 	// FINISH THIS LINE vvv
-	if (curToken.type == rparensym || curToken.type == identsym || curToken.type == numbersym )
+	if (curToken.type == rparensym || /* curToken.type == identsym || */ curToken.type == numbersym )
 	{
 		printparseerror(17);
 		flag = 1;
