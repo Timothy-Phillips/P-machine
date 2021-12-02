@@ -13,12 +13,13 @@ int cIndex;
 symbol *table;
 int tIndex;
 int flag = 0;
+char ident[12];
+
 void emit(int opname, int level, int mvalue);
 void addToSymbolTable(int k, char n[], int v, int l, int a, int m);
 void printparseerror(int err_code);
 void printsymboltable();
 void printassemblycode();
-
 //custom globals
 int lexLevel;
 //custiom functions
@@ -68,8 +69,8 @@ void Program(lexeme* list)
 	{
 		return;
 	}
-	emit(7, 0, 0); // Emit JMP
-	addToSymbolTable(3, "main", 0, 0, 0, UNMARKED);
+	emit(7, 0, 0); // Emit JMP*//
+	addToSymbolTable(3, "main", 0, lexLevel, 0, UNMARKED);
 	lexLevel = -1;
 	Block(list);
 	if(flag == 1)
@@ -163,19 +164,19 @@ void constant(lexeme* list)
 			curToken = list[lexLevel];
 			if (curToken.type != identsym)
 			{
-				printparseerror(7);
+				printparseerror(2);
 				flag = 1;
 				return;
 			}
 			int symidx = MULTIPLEDECLARATIONCHECK(curToken);
 			if(symidx != -1)
 			{
-				printparseerror(19);
+				printparseerror(18);
 				flag = 1; 
 				return;
 			}
 			//save ident name
-
+			strcpy(ident, curToken.name);
 			lexLevel++;
 			curToken = list[lexLevel];
 			if (curToken.type != assignsym)
@@ -193,7 +194,7 @@ void constant(lexeme* list)
 				return;
 			}
 			//add to symbol table (kind 1, saved name, number, level, 0, unmarked)
-			addToSymbolTable(1, curToken.name, curToken.value, lexLevel, 0, UNMARKED);
+			addToSymbolTable(1, ident, curToken.value, lexLevel, 0, UNMARKED);
 			lexLevel++;
 			curToken = list[lexLevel];
 		} while (curToken.type == commasym);
@@ -257,12 +258,12 @@ int variable(lexeme* list)
 			if(lexLevel == 0)
 			{
 				//add to symbol table (kind 2, ident, 0, level, numVars-1, unmarked)
-				addToSymbolTable(2, curToken.name, 0, lexLevel, numVars-1, UNMARKED);
+				addToSymbolTable(2, ident, 0, lexLevel, numVars-1, UNMARKED);
 			}
 			else
 			{
 				//add to symbol table (kind 2, ident, 0, level, numVars+2, unmarked)
-				addToSymbolTable(2, curToken.name, 0, lexLevel, numVars+2, UNMARKED);
+				addToSymbolTable(2, ident, 0, lexLevel, numVars+2, UNMARKED);
 			}
 			//get next token
 			lexLevel++;
@@ -317,7 +318,7 @@ void procedure(lexeme* list)
 			return;
 		}
 		//add to symbol table (kind 3, ident, 0, level, 0, unmarked)
-		addToSymbolTable(3, curToken.name, 0, lexLevel, 0, UNMARKED);
+		addToSymbolTable(3, ident, 0, lexLevel, 0, UNMARKED);
 		lexLevel++;
 		curToken = list[lexLevel];
 		if (curToken.type != semicolonsym)
