@@ -49,7 +49,7 @@ instruction *parse(lexeme *list, int printTable, int printCode)
 	*/
 	cIndex = 0;
 	lexLevel = 0;
-	printf("START PARSE");
+	// printf("START PARSE");
 	Program(list);
 	code[cIndex].opcode = -1;
 
@@ -360,7 +360,7 @@ void statement(lexeme* list)
 		
 		expression(list);
 		//emit STO (L = level – table[symIdx].level, M = table[symIdx].addr)
-		printf("L: %d, M: %d",(lexLevel - table[symIdx].level), table[symIdx].addr);
+		// printf("L: %d, M: %d",(lexLevel - table[symIdx].level), table[symIdx].addr);
 		emit(4, (lexLevel - table[symIdx].level), table[symIdx].addr);
 		return;
 	}//end outer if				 
