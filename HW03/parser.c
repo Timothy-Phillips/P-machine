@@ -51,6 +51,10 @@ instruction *parse(lexeme *list, int printTable, int printCode)
 	lexLevel = 0;
 	// printf("START PARSE");
 	Program(list);
+	if(flag == 1)
+	{
+		return;
+	}
 	code[cIndex].opcode = -1;
 
 	return code;
@@ -67,6 +71,10 @@ void Program(lexeme* list)
 	addToSymbolTable(3, "main", 0, 0, 0, UNMARKED);
 	lexLevel = -1;
 	Block(list);
+	if(flag == 1)
+	{
+		return;
+	}
 	lexeme curToken = list[lexLevel];
 	
 	if(curToken.type != periodsym)
@@ -99,8 +107,20 @@ void Block(lexeme* list)
 	int procedure_idx = tIndex - 1;
 
 	constant(list);
+	if(flag == 1)
+	{
+		return;
+	}
 	int x = variable(list);//x = number of variables
+	if(flag == 1)
+	{
+		return;
+	}
 	procedure(list);
+	if(flag == 1)
+	{
+		return;
+	}
 	//table[procedure_idx].addr = current code index * 3
 	table[procedure_idx].addr = cIndex * 3;
 	//if level == 0
@@ -117,6 +137,10 @@ void Block(lexeme* list)
 
 
 	statement(list);
+	if(flag == 1)
+	{
+		return;
+	}
 	MARK();
 
 	//Decrement level 
@@ -304,6 +328,10 @@ void procedure(lexeme* list)
 		lexLevel++;
 		curToken = list[lexLevel];
 		Block(list);
+		if(flag == 1)
+		{
+			return;
+		}
 		if (curToken.type != semicolonsym)
 		{
 			printparseerror(14);
@@ -359,6 +387,10 @@ void statement(lexeme* list)
 		curToken = list[lexLevel];		
 		
 		expression(list);
+		if(flag == 1)
+		{
+			return;
+		}
 		//emit STO (L = level – table[symIdx].level, M = table[symIdx].addr)
 		// printf("L: %d, M: %d",(lexLevel - table[symIdx].level), table[symIdx].addr);
 		emit(4, (lexLevel - table[symIdx].level), table[symIdx].addr);
@@ -373,6 +405,10 @@ void statement(lexeme* list)
 			lexLevel++;
 			curToken = list[lexLevel];
 			statement(list);
+			if(flag == 1)
+			{
+				return;
+			}
 		} while (curToken.type == semicolonsym);// while token == semicolonsym
 
 		if(curToken.type != endsym)
@@ -442,6 +478,10 @@ void statement(lexeme* list)
 
 		int loopIdx = cIndex;
 		condition(list);
+		if(flag == 1)
+		{
+			return;
+		}
 		if(curToken.type != dosym)
 		{
 			printparseerror(9);
@@ -455,7 +495,10 @@ void statement(lexeme* list)
 		int jpcIdx = cIndex;
 		emit(8, 0, jpcIdx);
 		statement(list);
-		
+		if(flag == 1)
+		{
+			return;
+		}		
 		emit(9, 0, loopIdx * 3);
 		code[jpcIdx].m = cIndex * 3;
 		return;		
@@ -505,6 +548,10 @@ void statement(lexeme* list)
 		curToken = list[lexLevel];	
 
 		expression(list);
+		if(flag == 1)
+		{
+			return;
+		}
 		emit(9, 0, 1);
 		return;
 	// 	return
@@ -554,23 +601,39 @@ void condition(lexeme* list)
 		lexLevel++;
 		curToken = list[lexLevel];
 		expression(list);
+		if(flag == 1)
+		{
+			return;
+		}
 		emit(2, lexLevel, 6);
 	}
 	else
 	{
 		expression(list);
+		if(flag == 1)
+		{
+			return;
+		}
 		if (curToken.type == eqlsym)
 		{
 			lexLevel++;
 			curToken = list[lexLevel];
 			expression(list);
-			emit(2, lexLevel, 8);
+		if(flag == 1)
+		{
+			return;
+		}			
+		emit(2, lexLevel, 8);
 		}
 		else if (curToken.type == neqsym)
 		{
 			lexLevel++;
 			curToken = list[lexLevel];
 			expression(list);
+			if(flag == 1)
+			{
+				return;
+			}			
 			emit(2, lexLevel, 9);
 		}
 		else if (curToken.type == lsssym)
@@ -578,6 +641,10 @@ void condition(lexeme* list)
 			lexLevel++;
 			curToken = list[lexLevel];
 			expression(list);
+			if(flag == 1)
+			{
+				return;
+			}			
 			emit(2, lexLevel, 10);
 		}
 		else if (curToken.type == leqsym)
@@ -585,6 +652,10 @@ void condition(lexeme* list)
 			lexLevel++;
 			curToken = list[lexLevel];
 			expression(list);
+			if(flag == 1)
+			{
+				return;
+			}			
 			emit(2, lexLevel, 11);
 		}
 		else if (curToken.type == gtrsym)
@@ -592,6 +663,10 @@ void condition(lexeme* list)
 			lexLevel++;
 			curToken = list[lexLevel];
 			expression(list);
+			if(flag == 1)
+			{
+				return;
+			}			
 			emit(2, lexLevel, 12);
 		}
 		else if (curToken.type == geqsym)
@@ -599,6 +674,10 @@ void condition(lexeme* list)
 			lexLevel++;
 			curToken = list[lexLevel];
 			expression(list);
+			if(flag == 1)
+			{
+				return;
+			}			
 			emit(2, lexLevel, 13);
 		}
 		else
@@ -622,6 +701,10 @@ void expression(lexeme* list)
 		lexLevel++;
 		curToken = list[lexLevel];
 		term(list);
+		if(flag == 1)
+		{
+			return;
+		}			
 		emit(2, 0, 1); // Emit Neg
 
 		while (curToken.type == addsym || curToken.type == subsym)
@@ -631,6 +714,10 @@ void expression(lexeme* list)
 				lexLevel++;
 				curToken = list[lexLevel];
 				term(list);
+		if(flag == 1)
+		{
+			return;
+		}			
 				emit(2, 0, 2);  // Emit Add
 			}
 			else
@@ -638,6 +725,10 @@ void expression(lexeme* list)
 				lexLevel++;
 				curToken = list[lexLevel];
 				term(list);
+		if(flag == 1)
+		{
+			return;
+		}			
 				emit(2, 0, 3);  // Emit Sub
 			}
 		}
@@ -659,6 +750,10 @@ void expression(lexeme* list)
 				lexLevel++;
 				curToken = list[lexLevel];
 				term(list);
+		if(flag == 1)
+		{
+			return;
+		}			
 				emit(2, 0, 2); // Emit Add
 			}
 			else
@@ -666,6 +761,10 @@ void expression(lexeme* list)
 				lexLevel++;
 				curToken = list[lexLevel];
 				term(list);
+		if(flag == 1)
+		{
+			return;
+		}			
 				emit(2, 0, 3); // Emit Sub
 			}
 		}
@@ -685,6 +784,10 @@ void term(lexeme* list)
 		return;
 	}
 	factor(list);
+		if(flag == 1)
+		{
+			return;
+		}			
 	lexeme curToken = list[lexLevel];
 	while (curToken.type == multsym || curToken.type == divsym || curToken.type == modsym)
 	{
@@ -693,6 +796,10 @@ void term(lexeme* list)
 			lexLevel++;
 			curToken = list[lexLevel];
 			factor(list);
+		if(flag == 1)
+		{
+			return;
+		}			
 			emit(2, 0, 4); // Emit Mul
 		}
 		else if (curToken.type == divsym)
@@ -700,6 +807,10 @@ void term(lexeme* list)
 			lexLevel++;
 			curToken = list[lexLevel];
 			factor(list);
+		if(flag == 1)
+		{
+			return;
+		}			
 			emit(2, 0, 5); // Emit Div
 		}
 		else
@@ -707,6 +818,10 @@ void term(lexeme* list)
 			lexLevel++;
 			curToken = list[lexLevel];
 			factor(list);
+		if(flag == 1)
+		{
+			return;
+		}			
 			emit(2, 0, 7); // Emit Mod
 		}
 	}
@@ -768,6 +883,10 @@ void factor(lexeme* list)
 		lexLevel++;
 		curToken = list[lexLevel];
 		expression(list);
+		if(flag == 1)
+		{
+			return;
+		}			
 		if (curToken.type != rparensym)
 		{
 			printparseerror(12);
