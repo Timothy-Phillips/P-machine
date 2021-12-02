@@ -299,6 +299,7 @@ void statement(lexeme* list)
 		
 		expression(list);
 		//emit STO (L = level – table[symIdx].level, M = table[symIdx].addr)
+		print("L: %d, M: %d",(lexLevel - table[symIdx].level), table[symIdx].addr);
 		emit(4, (lexLevel - table[symIdx].level), table[symIdx].addr);
 		return;
 	}//end outer if				 
