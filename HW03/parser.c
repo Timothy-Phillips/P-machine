@@ -53,7 +53,8 @@ instruction *parse(lexeme *list, int printTable, int printCode)
 	Program(list);
 	if(flag == 1)
 	{
-		return;
+		code[cIndex].opcode = -1;
+		return NULL;
 	}
 	code[cIndex].opcode = -1;
 
@@ -221,7 +222,7 @@ int variable(lexeme* list)
 {
 	if(flag == 1)
 	{
-		return;
+		return 0;
 	}
 	lexeme curToken = list[lexLevel];
 
@@ -241,7 +242,7 @@ int variable(lexeme* list)
 			{
 				printparseerror(3);
 				flag = 1;
-				return;
+				return 0;
 			}//end if
 			
 			//symidx = MULTIPLEDECLARATIONCHECK(token)
@@ -250,7 +251,7 @@ int variable(lexeme* list)
 			{
 				printparseerror(19);
 				flag = 1;
-				return;
+				return 0;
 			}//end if
 			
 			if(lexLevel == 0)
@@ -274,13 +275,13 @@ int variable(lexeme* list)
 			{
 				printparseerror(13);
 				flag = 1;
-				return;
+				return 0;
 			}
 			else
 			{
 				printparseerror(14);
 				flag = 1;
-				return;
+				return 0;
 			}//end inner if else
 		}//end middle if
 
