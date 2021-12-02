@@ -585,7 +585,6 @@ void expression(lexeme* list)
 }
 void term(lexeme* list)
 {
-	
 	factor(list);
 	lexeme curToken = list[lexLevel];
 	while (curToken.type == multsym || curToken.type == divsym || curToken.type == modsym)
@@ -615,7 +614,6 @@ void term(lexeme* list)
 }
 void factor(lexeme* list)
 {
-	printf("Test");
 	lexeme curToken = list[lexLevel];
 	int symIdx_var = 0;
 	int symIdx_const = 0;
