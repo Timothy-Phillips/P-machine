@@ -68,7 +68,7 @@ void Program(lexeme* list)
 	{
 		return;
 	}
-	emit(7, lexLevel, 0); // Emit JMP
+	emit(7, 0, 0); // Emit JMP
 	addToSymbolTable(3, "main", 0, 0, 0, UNMARKED);
 	lexLevel = -1;
 	Block(list);
@@ -341,7 +341,7 @@ void procedure(lexeme* list)
 		}
 		lexLevel++;
 		curToken = list[lexLevel];
-		emit(2, lexLevel, 0);
+		emit(2, 0, 0);
 
 	}
 }
@@ -606,7 +606,7 @@ void condition(lexeme* list)
 		{
 			return;
 		}
-		emit(2, lexLevel, 6);
+		emit(2, 0, 6);
 	}
 	else
 	{
@@ -624,7 +624,7 @@ void condition(lexeme* list)
 		{
 			return;
 		}			
-		emit(2, lexLevel, 8);
+		emit(2, 0, 8);
 		}
 		else if (curToken.type == neqsym)
 		{
@@ -635,7 +635,7 @@ void condition(lexeme* list)
 			{
 				return;
 			}			
-			emit(2, lexLevel, 9);
+			emit(2, 0, 9);
 		}
 		else if (curToken.type == lsssym)
 		{
@@ -646,7 +646,7 @@ void condition(lexeme* list)
 			{
 				return;
 			}			
-			emit(2, lexLevel, 10);
+			emit(2, 0, 10);
 		}
 		else if (curToken.type == leqsym)
 		{
@@ -657,7 +657,7 @@ void condition(lexeme* list)
 			{
 				return;
 			}			
-			emit(2, lexLevel, 11);
+			emit(2, 0, 11);
 		}
 		else if (curToken.type == gtrsym)
 		{
@@ -668,7 +668,7 @@ void condition(lexeme* list)
 			{
 				return;
 			}			
-			emit(2, lexLevel, 12);
+			emit(2, 0, 12);
 		}
 		else if (curToken.type == geqsym)
 		{
@@ -679,7 +679,7 @@ void condition(lexeme* list)
 			{
 				return;
 			}			
-			emit(2, lexLevel, 13);
+			emit(2, 0, 13);
 		}
 		else
 		{
@@ -771,15 +771,15 @@ void expression(lexeme* list)
 		}
 	}
 	// FINISH THIS LINE vvv
-	// if (curToken.type == rparensym || /* curToken.type == identsym || */ curToken.type == numbersym )
-	// {
-	// 	printsymboltable();
-	// 	printf("\n\n***************************\n\tname:\t%svalue\t%d\ttype:\t",list[lexLevel].name, list[lexLevel].value );
+	if (curToken.type == rparensym || /* curToken.type == identsym || */ curToken.type == numbersym )
+	{
+		// printsymboltable();
+		// printf("\n\n***************************\n\tname:\t%svalue\t%d\ttype:\t",list[lexLevel].name, list[lexLevel].value );
 
-	// 	printparseerror(17);
-	// 	flag = 1;
-	// 	return;
-	// }
+		printparseerror(17);
+		flag = 1;
+		return;
+	}
 }
 void term(lexeme* list)
 {
