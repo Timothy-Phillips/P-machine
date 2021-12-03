@@ -384,7 +384,7 @@ void statement(lexeme* list)
 
  		if (curToken.type != assignsym)
 		{
-			printf("\n\n***************************\n\tname:\t%svalue\t%d\ttype:\t\n***************************",list[lexLevel].name, list[lexLevel].value );
+			printf("\n\n***************************\n\tname:\t%svalue\t%d\ttype:\t\n***************************\n",curToken.name, curToken.value );
 			printparseerror(5);
 			flag = 1;
 			return;
