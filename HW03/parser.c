@@ -202,13 +202,13 @@ void constant(lexeme* list)
 		  {
 			  if (curToken.type == identsym)
 			  {
-				  printparseerror(13);
+				  printparseerror(14);
 				  flag = 1;
 				  return;
 			  }
 			  else
 			  {
-				  printparseerror(14);
+				  printparseerror(13);
 				  flag = 1;
 				  return;
 			  }
@@ -250,7 +250,7 @@ int variable(lexeme* list)
 			int symidx = MULTIPLEDECLARATIONCHECK(curToken);
 			if(symidx != -1)
 			{
-				printparseerror(19);
+				printparseerror(3);
 				flag = 1;
 				return 0;
 			}//end if
@@ -274,13 +274,13 @@ int variable(lexeme* list)
 		{
 			if(curToken.type == identsym)
 			{
-				printparseerror(13);
+				printparseerror(14);
 				flag = 1;
 				return 0;
 			}
 			else
 			{
-				printparseerror(14);
+				printparseerror(13);
 				flag = 1;
 				return 0;
 			}//end inner if else
@@ -465,6 +465,10 @@ void statement(lexeme* list)
 			int jmpIdx = cIndex;
 			emit(7, 0, jmpIdx); //NOTSURE
 			code[jpcIdx].m = cIndex * 3;
+			//missing from pseudo coe
+			lexLevel++;
+			curToken = list[lexLevel];
+			
 			statement(list);
 			code[jmpIdx].m = cIndex * 3;
 		}//end if
@@ -589,8 +593,9 @@ void statement(lexeme* list)
 		curToken = list[lexLevel];	
 		//emit CAL (L = level – table[symIdx].level, symIdx)
 		emit(5, lexLevel- table[symIdx].level, symIdx);
+		return;
 	}//end callsym
-
+	
 }
 void condition(lexeme* list)
 {
@@ -623,11 +628,11 @@ void condition(lexeme* list)
 			lexLevel++;
 			curToken = list[lexLevel];
 			expression(list);
-		if(flag == 1)
-		{
-			return;
-		}			
-		emit(2, 0, 8);
+			if(flag == 1)
+			{
+				return;
+			}			
+			emit(2, 0, 8);
 		}
 		else if (curToken.type == neqsym)
 		{
