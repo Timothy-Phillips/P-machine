@@ -72,12 +72,16 @@ void Program(lexeme* list)
 	emit(7, 0, 0); // Emit JMP*//
 	addToSymbolTable(3, "main", 0, lexLevel, 0, UNMARKED);
 	lexLevel = -1;
+	//adding this from discord
+	lexLevel++;
+	lexeme curToken = list[lexLevel];
+
 	Block(list);
 	if(flag == 1)
 	{
 		return;
 	}
-	lexeme curToken = list[lexLevel];
+	curToken = list[lexLevel];
 	
 	if(curToken.type != periodsym)
 		printparseerror(1);
@@ -468,7 +472,7 @@ void statement(lexeme* list)
 			//missing from pseudo coe
 			lexLevel++;
 			curToken = list[lexLevel];
-			
+
 			statement(list);
 			code[jmpIdx].m = cIndex * 3;
 		}//end if
