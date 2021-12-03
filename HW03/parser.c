@@ -74,7 +74,7 @@ void Program(lexeme* list)
 	addToSymbolTable(3, "main", 0, lexLevel, 0, UNMARKED);
 	lexLevel = -1;
 	//adding this from discord
-	lexLevel++;
+	// lexLevel++;
 	lexeme curToken = list[lexLevel];
 
 	Block(list);
