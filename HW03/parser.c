@@ -14,6 +14,7 @@ symbol *table;
 int tIndex;
 int flag = 0;
 char ident[12];
+void printList(lexeme* list);
 
 void emit(int opname, int level, int mvalue);
 void addToSymbolTable(int k, char n[], int v, int l, int a, int m);
@@ -384,7 +385,8 @@ void statement(lexeme* list)
 
  		if (curToken.type != assignsym)
 		{
-			printf("\n\n***************************\n\tname:\t%svalue\t%d\ttype:\t\n***************************\n",curToken.name, curToken.value );
+			printList(list);
+			// printf("\n\n***************************\n\tname:\t%svalue\t%d\ttype:\t\n***************************\n",curToken.name, curToken.value );
 			printparseerror(5);
 			flag = 1;
 			return;
@@ -1178,4 +1180,11 @@ void printassemblycode()
 	}
 	if (table != NULL)
 		free(table);
+}
+void printList(lexeme* list)
+{
+	for(int i = 0; i < lexLevel; i++)
+	{
+		printf("\n\n***************************\n\tname:\t%svalue:\t%d\n***************************\n",list[i].name, list[i].value );
+	}
 }
