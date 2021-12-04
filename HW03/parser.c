@@ -260,7 +260,7 @@ int variable(lexeme* list)
 				flag = 1;
 				return 0;
 			}//end if
-			
+			printf("lexlevel: %d",lexLevel);
 			if(lexLevel == 0)
 			{
 				//add to symbol table (kind 2, ident, 0, level, numVars-1, unmarked)
