@@ -855,7 +855,7 @@ void factor(lexeme* list)
 		return;
 	}
 	lexeme curToken = list[lexLevel];
-	printf("\ncurtoken%d\n", curToken.value);
+	printf("\ncurtoken%d\t%s\n", curToken.value, getTokenType(curToken.type));
 	int symIdx_var = 0;
 	int symIdx_const = 0;
 	if (curToken.type == identsym)
