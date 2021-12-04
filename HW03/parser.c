@@ -896,6 +896,7 @@ void factor(lexeme* list)
 	}
 	else if (curToken.type == numbersym)
 	{
+		printf("\ncurtoken%d\n", curToken.value);
 		emit(1, 0, curToken.value);
 		lexLevel++;
 		curToken = list[lexLevel];
