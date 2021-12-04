@@ -751,7 +751,6 @@ void expression(lexeme* list)
 			}
 		}
 	}
-	
 	else
 	{
 		if (curToken.type == addsym)
@@ -800,6 +799,7 @@ void expression(lexeme* list)
 }
 void term(lexeme* list)
 {
+	printf("\nTERM\n");
 	if(flag == 1)
 	{
 		return;
