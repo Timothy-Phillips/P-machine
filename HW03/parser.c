@@ -15,6 +15,7 @@ int tIndex;
 int flag = 0;
 char ident[12];
 void printList(lexeme* list);
+const char* getTokenType(enum token_type t);
 
 void emit(int opname, int level, int mvalue);
 void addToSymbolTable(int k, char n[], int v, int l, int a, int m);
@@ -1185,6 +1186,80 @@ void printList(lexeme* list)
 {
 	for(int i = 0; i < lexLevel; i++)
 	{
-		printf("\n\n***************************\n\tname:\t%s\tvalue:\t%d\n***************************\n",list[i].name, list[i].value );
+		printf("\n\n***************************\n\tname:\t%s\tvalue:\t%dtype:\t%s\n***************************\n",list[i].name, list[i].value, getTokenType(list[i].type));
+	}
+}
+const char* getTokenType(enum token_type t)
+{
+	switch( t)
+	{
+		case constsym:
+			return "const";
+		case varsym:
+			return "var";
+		case procsym:
+			return "proc";
+		case beginsym:
+			return "begin";
+		case endsym:
+			return "end";
+		case whilesym:
+			return "while";
+		case dosym:
+			return "do";
+		case ifsym:
+			return "if";
+		case thensym:
+			return "then";
+		case elsesym:
+			return "else";
+		case callsym:
+			return "call";
+		case writesym:
+			return "write";
+		case readsym:
+			return "read";
+		case identsym:
+			return "ident";
+		case numbersym:
+			return "number";
+		case assignsym:
+			return "assign";
+		case addsym:
+			return "add";
+		case subsym:
+			return "sub";
+		case multsym:
+			return "mult";
+		case divsym:
+			return "div";
+		case modsym:
+			return "mod";
+		case eqlsym:
+			return "eql";
+		case neqsym:
+			return "neq";
+		case lsssym:
+			return "lss";
+		case leqsym:
+			return "leq";
+		case gtrsym:
+			return "gtr";
+		case geqsym:
+			return "geq";
+		case oddsym:
+			return "odd";
+		case lparensym:
+			return "lparen";
+		case rparensym:
+			return "rparen";
+		case commasym:
+			return "comma";
+		case periodsym:
+			return "period";
+		case semicolonsym:
+			return "semicolon";
+		default:
+			return"";
 	}
 }
