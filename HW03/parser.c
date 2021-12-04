@@ -849,6 +849,7 @@ void term(lexeme* list)
 }
 void factor(lexeme* list)
 {
+	printf("\nFACTOR\n");
 	if(flag == 1)
 	{
 		return;
