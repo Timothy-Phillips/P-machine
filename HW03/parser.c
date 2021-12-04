@@ -928,7 +928,7 @@ void factor(lexeme* list)
 				return;
 	}
 }
-}
+
 int FINDSYMBOL(lexeme token, int kind)
 {
 	int result = 0;
