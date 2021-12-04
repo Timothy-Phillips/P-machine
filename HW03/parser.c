@@ -386,7 +386,7 @@ void statement(lexeme* list)
 
  		if (curToken.type != assignsym)
 		{
-			printList(list);
+			// printList(list);
 			// printf("\n\n***************************\n\tname:\t%svalue\t%d\ttype:\t\n***************************\n",curToken.name, curToken.value );
 			printparseerror(5);
 			flag = 1;
@@ -424,7 +424,7 @@ void statement(lexeme* list)
 		if(curToken.type != endsym)
 		{
 			//if token == identsym, beginsym, ifsym, whilesym, readsym, writesym,or callsym
-			if(curToken.type == identsym || curToken.type == beginsym || curToken.type == ifsym || curToken.type == whilesym || curToken.type == readsym || curToken.type == writesym || curToken.type == callsym)
+			if((curToken.type == identsym) || (curToken.type == beginsym) || (curToken.type == ifsym) || (curToken.type == whilesym) || (curToken.type == readsym) || (curToken.type == writesym) || (curToken.type == callsym))
 			{
 				printList(list);
 				printparseerror(15);
