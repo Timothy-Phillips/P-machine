@@ -381,7 +381,7 @@ void statement(lexeme* list)
 		}//end if
 
 		//get next token
-		lexLevel++;
+		// lexLevel++;
 		curToken = list[lexLevel];
 
  		if (curToken.type != assignsym)
@@ -1186,7 +1186,7 @@ void printList(lexeme* list)
 {
 	for(int i = 0; i < lexLevel; i++)
 	{
-		printf("\n\n***************************\n\tname:\t%s\tvalue:\t%dtype:\t%s\n***************************\n",list[i].name, list[i].value, getTokenType(list[i].type));
+		printf("\n\n******************************************************\n\tname:\t%s\tvalue:\t%d\ttype:\t%s\n******************************************************\n",list[i].name, list[i].value, getTokenType(list[i].type));
 	}
 }
 const char* getTokenType(enum token_type t)
