@@ -799,7 +799,6 @@ void expression(lexeme* list)
 }
 void term(lexeme* list)
 {
-	printf("\nTERM\n");
 	if(flag == 1)
 	{
 		return;
@@ -849,13 +848,11 @@ void term(lexeme* list)
 }
 void factor(lexeme* list)
 {
-	printf("\nFACTOR\n");
 	if(flag == 1)
 	{
 		return;
 	}
 	lexeme curToken = list[lexLevel];
-	printf("\ncurtoken%d\t%s\n", curToken.value, getTokenType(curToken.type));
 	int symIdx_var = 0;
 	int symIdx_const = 0;
 	if (curToken.type == identsym)
@@ -898,7 +895,6 @@ void factor(lexeme* list)
 	}
 	else if (curToken.type == numbersym)
 	{
-		printf("\ncurtoken%d\n", curToken.value);
 		emit(1, 0, curToken.value);
 		lexLevel++;
 		curToken = list[lexLevel];
