@@ -381,7 +381,7 @@ void statement(lexeme* list)
 		}//end if
 
 		//get next token
-		// lexLevel++;
+		lexLevel++;
 		curToken = list[lexLevel];
 
  		if (curToken.type != assignsym)
@@ -706,6 +706,7 @@ void condition(lexeme* list)
 }
 void expression(lexeme* list)
 {
+	printf("EXRPESSION");
 	if(flag == 1)
 	{
 		return;
