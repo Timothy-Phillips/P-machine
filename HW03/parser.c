@@ -707,6 +707,7 @@ void condition(lexeme* list)
 void expression(lexeme* list)
 {
 	printf("EXRPESSION");
+	printf("\n\n******************************************************\n\tname:\t%s\tvalue:\t%d\ttype:\t%s\n******************************************************\n",list[i].name, list[i].value, getTokenType(list[i].type));
 	if(flag == 1)
 	{
 		return;
