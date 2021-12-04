@@ -876,6 +876,7 @@ void factor(lexeme* list)
 				flag = 1;
 				return;
 			}
+		}	
 		if (symIdx_var == -1)
 		{
 			int m = table[symIdx_const].val;
